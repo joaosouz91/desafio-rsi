@@ -1,5 +1,6 @@
 package br.com.brasilprev.api.service;
 
+import br.com.brasilprev.api.dto.CostumerDTO;
 import br.com.brasilprev.api.model.Costumer;
 import br.com.brasilprev.api.repository.CostumerRepository;
 import org.springframework.beans.factory.annotation.Autowired;

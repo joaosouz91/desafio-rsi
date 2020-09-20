@@ -3,10 +3,8 @@ package br.com.brasilprev.api.model;
 import br.com.brasilprev.api.model.enumerator.ModelStatus;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,7 +12,8 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @Entity
-public class User implements Model {
+@Table(name = "user_account")
+public class UserAccount implements Model, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

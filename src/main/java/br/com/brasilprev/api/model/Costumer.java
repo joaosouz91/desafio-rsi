@@ -1,11 +1,13 @@
 package br.com.brasilprev.api.model;
 
+import br.com.brasilprev.api.dto.CostumerDTO;
 import br.com.brasilprev.api.model.enumerator.ModelStatus;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.List;
 
 @AllArgsConstructor
@@ -14,7 +16,8 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Costumer implements Model {
+@Table(name = "costumer")
+public class Costumer implements Model, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +27,7 @@ public class Costumer implements Model {
     @Size(min = 3, max = 60)
     private String name;
 
-    @OneToMany(mappedBy = "costumer")
+    @OneToMany(mappedBy = "idCostumer", fetch = FetchType.LAZY)
     private List<CostumerAddress> adressList;
 
     @NotNull
@@ -33,6 +36,5 @@ public class Costumer implements Model {
     private String phoneTwo;
 
     private ModelStatus status;
-
 
 }

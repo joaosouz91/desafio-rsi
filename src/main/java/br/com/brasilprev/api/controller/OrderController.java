@@ -1,5 +1,6 @@
 package br.com.brasilprev.api.controller;
 
+import br.com.brasilprev.api.dto.OrderDTO;
 import br.com.brasilprev.api.event.CreatedResourceEvent;
 import br.com.brasilprev.api.event.UpdatedResourceEvent;
 import br.com.brasilprev.api.model.Order;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
@@ -24,10 +26,16 @@ public class OrderController {
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
+    @GetMapping()
+    public ResponseEntity<List<OrderDTO>> findAll() {
+        List<OrderDTO> orderDTOList = orderService.findAll();
+        return orderDTOList != null ? ResponseEntity.ok(orderDTOList) : ResponseEntity.notFound().build();
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Order> findById(@PathVariable("id") Long id) {
-        Order order = orderService.findById(id);
-        return order != null ? ResponseEntity.ok(order) : ResponseEntity.notFound().build();
+    public ResponseEntity<OrderDTO> findById(@PathVariable("id") Long id) {
+        OrderDTO orderDTO = orderService.findById(id);
+        return orderDTO != null ? ResponseEntity.ok(orderDTO) : ResponseEntity.notFound().build();
     }
 
     @PostMapping

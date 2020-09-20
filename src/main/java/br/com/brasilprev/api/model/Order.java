@@ -5,6 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,7 +16,8 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Order implements Model {
+@Table(name = "\"order\"")
+public class Order implements Model, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,15 +34,22 @@ public class Order implements Model {
     private CostumerAddress costumerAddress;
 
     @NotNull
-    private LocalDate date;
+    @Column(name = "creation_date")
+    private LocalDate creationDate;
 
-    @NotNull
-    @OneToMany
-    private List<OrderProduct> productList;
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
-    @Column(name = "discount")
-    private Double discountOnTotalPrice;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
+    private List<LineItem> lineItemList;
+
+    @Column(name = "order_discount")
+    private Double discount;
+
+    @Column(name = "total_price")
+    private BigDecimal totalPrice;
 
     @NotNull
     private OrderStatus status;
+
 }

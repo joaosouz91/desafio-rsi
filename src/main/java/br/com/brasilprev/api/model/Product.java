@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @AllArgsConstructor
@@ -14,7 +15,8 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
-public class Product implements Model {
+@Table(name = "product")
+public class Product implements Model, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
