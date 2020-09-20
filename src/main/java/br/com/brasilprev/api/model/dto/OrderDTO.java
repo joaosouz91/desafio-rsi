@@ -1,4 +1,4 @@
-package br.com.brasilprev.api.dto;
+package br.com.brasilprev.api.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

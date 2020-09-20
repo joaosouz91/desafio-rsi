@@ -1,9 +1,9 @@
 package br.com.brasilprev.api.service;
 
-import br.com.brasilprev.api.dto.OrderDTO;
-import br.com.brasilprev.api.dto.LineItemDTO;
+import br.com.brasilprev.api.model.dto.OrderDTO;
 import br.com.brasilprev.api.model.Order;
 import br.com.brasilprev.api.model.LineItem;
+import br.com.brasilprev.api.model.mapper.OrderMapper;
 import br.com.brasilprev.api.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -13,7 +13,6 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,26 +23,35 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
+    private CostumerService costumerService;
+
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private OrderMapper orderMapper;
+
+    @Autowired
     private MessageSource messageSource;
 
     public List<OrderDTO> findAll() {
         List<Order> orderList = orderRepository.findAll();
         if(orderList == null || orderList.isEmpty()) throw new EmptyResultDataAccessException(1);
-        return orderList.stream().map(this::buildDTO).collect(Collectors.toList());
+        return orderList.stream().map(orderMapper::convertModelToDto).collect(Collectors.toList());
     }
 
     public OrderDTO findById(Long id) {
         Order order = orderRepository.findOne(id);
         if(order == null) throw new EmptyResultDataAccessException(1);
-        return this.buildDTO(order);
+        return orderMapper.convertModelToDto(order);
     }
 
-    public Order create(Order order) {
-        if(order.getId() != null)
+    public Order create(OrderDTO dto) {
+        if(dto.getId() != null)
             throw new HttpMessageNotReadableException(
                     messageSource.getMessage("request.out.of.scope",
                             null, LocaleContextHolder.getLocale()));
-        return orderRepository.save(order);
+        return orderRepository.save(orderMapper.convertDtoToModel(dto));
     }
 
     public Order update(Order order) {
@@ -56,35 +64,6 @@ public class OrderService {
 
     public void delete(Long id) {
         orderRepository.delete(id);
-    }
-
-    private OrderDTO buildDTO(Order order) {
-        return new OrderDTO(
-                order.getId(),
-                order.getCostumer().getId(),
-                order.getCostumerAddress().getId(),
-                order.getCreationDate(),
-                order.getEndDate(),
-                this.buildLineItemDTO(order.getLineItemList()),
-                order.getDiscount(),
-                order.getTotalPrice(),
-                order.getStatus().toString());
-    }
-
-    private List<LineItemDTO> buildLineItemDTO(List<LineItem> lineItemList) {
-
-        final List<LineItemDTO> lineItemDTOList = new ArrayList<>();
-
-        for (LineItem lineItem : lineItemList) {
-            final LineItemDTO lineItemDTO = new LineItemDTO();
-            lineItemDTO.setIdProduct(lineItem.getProduct().getId());
-            lineItemDTO.setName(lineItem.getProduct().getName());
-            lineItemDTO.setSKU(lineItem.getProduct().getSku());
-            lineItemDTO.setSellingPrice(lineItem.getSellingPrice());
-            lineItemDTOList.add(lineItemDTO);
-        }
-
-        return lineItemDTOList;
     }
 
     private BigDecimal getOrderTotalWithDiscount(BigDecimal total, Double discount) {

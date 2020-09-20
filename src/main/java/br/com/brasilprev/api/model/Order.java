@@ -40,7 +40,7 @@ public class Order implements Model, Serializable {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LineItem> lineItemList;
 
     @Column(name = "order_discount")

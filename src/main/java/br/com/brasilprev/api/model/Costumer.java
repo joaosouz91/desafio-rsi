@@ -1,6 +1,5 @@
 package br.com.brasilprev.api.model;
 
-import br.com.brasilprev.api.dto.CostumerDTO;
 import br.com.brasilprev.api.model.enumerator.ModelStatus;
 import lombok.*;
 
@@ -27,7 +26,7 @@ public class Costumer implements Model, Serializable {
     @Size(min = 3, max = 60)
     private String name;
 
-    @OneToMany(mappedBy = "idCostumer", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "costumer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CostumerAddress> adressList;
 
     @NotNull

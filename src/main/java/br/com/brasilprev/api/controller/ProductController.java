@@ -1,5 +1,6 @@
 package br.com.brasilprev.api.controller;
 
+import br.com.brasilprev.api.model.dto.ProductDTO;
 import br.com.brasilprev.api.event.CreatedResourceEvent;
 import br.com.brasilprev.api.event.UpdatedResourceEvent;
 import br.com.brasilprev.api.model.Product;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -23,15 +25,21 @@ public class ProductController {
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
+    @GetMapping()
+    public ResponseEntity<List<ProductDTO>> findAll() {
+        List<ProductDTO> dtoList = productService.findAll();
+        return dtoList != null ? ResponseEntity.ok(dtoList) : ResponseEntity.notFound().build();
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Product> findById(@PathVariable("id") Long id) {
-        Product product = productService.findById(id);
-        return product != null ? ResponseEntity.ok(product) : ResponseEntity.notFound().build();
+    public ResponseEntity<ProductDTO> findById(@PathVariable("id") Long id) {
+        ProductDTO dto = productService.findById(id);
+        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@Valid @RequestBody Product product, HttpServletResponse response) {
-        Product created = productService.create(product);
+    public ResponseEntity<Product> create(@Valid @RequestBody ProductDTO dto, HttpServletResponse response) {
+        Product created = productService.create(dto);
         eventPublisher.publishEvent(new CreatedResourceEvent(this, response, created.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

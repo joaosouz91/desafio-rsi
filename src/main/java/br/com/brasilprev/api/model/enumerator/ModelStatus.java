@@ -18,5 +18,8 @@ public enum ModelStatus {
         return this.label;
     }
 
+    public boolean getBoolean() {
+        return this.ordinal() != 0;
+    }
 
 }

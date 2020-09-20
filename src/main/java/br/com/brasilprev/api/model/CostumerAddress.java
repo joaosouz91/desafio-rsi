@@ -2,10 +2,8 @@ package br.com.brasilprev.api.model;
 
 import br.com.brasilprev.api.model.enumerator.AddressType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
-import javax.jws.WebParam;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -24,8 +22,9 @@ public class CostumerAddress implements Model, Serializable {
     private Long id;
 
     @NotNull
+    @ManyToOne
     @JoinColumn(name="id_costumer", referencedColumnName="id", nullable=false)
-    private Long idCostumer;
+    private Costumer costumer;
 
     @NotNull
     private String street;

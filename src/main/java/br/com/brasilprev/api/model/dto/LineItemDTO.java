@@ -1,4 +1,4 @@
-package br.com.brasilprev.api.dto;
+package br.com.brasilprev.api.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

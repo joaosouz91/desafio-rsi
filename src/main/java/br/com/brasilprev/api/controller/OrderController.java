@@ -1,6 +1,6 @@
 package br.com.brasilprev.api.controller;
 
-import br.com.brasilprev.api.dto.OrderDTO;
+import br.com.brasilprev.api.model.dto.OrderDTO;
 import br.com.brasilprev.api.event.CreatedResourceEvent;
 import br.com.brasilprev.api.event.UpdatedResourceEvent;
 import br.com.brasilprev.api.model.Order;
@@ -28,19 +28,19 @@ public class OrderController {
 
     @GetMapping()
     public ResponseEntity<List<OrderDTO>> findAll() {
-        List<OrderDTO> orderDTOList = orderService.findAll();
-        return orderDTOList != null ? ResponseEntity.ok(orderDTOList) : ResponseEntity.notFound().build();
+        List<OrderDTO> dtoList = orderService.findAll();
+        return dtoList != null ? ResponseEntity.ok(dtoList) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderDTO> findById(@PathVariable("id") Long id) {
-        OrderDTO orderDTO = orderService.findById(id);
-        return orderDTO != null ? ResponseEntity.ok(orderDTO) : ResponseEntity.notFound().build();
+        OrderDTO dto = orderService.findById(id);
+        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<Order> create(@Valid @RequestBody Order order, HttpServletResponse response) {
-        Order created = orderService.create(order);
+    public ResponseEntity<Order> create(@Valid @RequestBody OrderDTO orderDTO, HttpServletResponse response) {
+        Order created = orderService.create(orderDTO);
         eventPublisher.publishEvent(new CreatedResourceEvent(this, response, created.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -1,4 +1,4 @@
-package br.com.brasilprev.api.dto;
+package br.com.brasilprev.api.model.dto;
 
 import br.com.brasilprev.api.model.enumerator.AddressType;
 import lombok.AllArgsConstructor;

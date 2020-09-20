@@ -28,6 +28,7 @@ public class Product implements Model, Serializable {
 
     private String description;
 
+    @NotNull
     private String sku;
 
     @NotNull

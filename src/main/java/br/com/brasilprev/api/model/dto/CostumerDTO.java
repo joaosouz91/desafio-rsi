@@ -1,4 +1,4 @@
-package br.com.brasilprev.api.dto;
+package br.com.brasilprev.api.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,13 +11,13 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CostumerDTO implements AbstractDTO {
+public class CostumerDTO {
 
     private Long id;
     private String name;
-    private List<CostumerAddressDTO> addressDTOList;
+    private List<CostumerAddressDTO> addressList;
     private String phoneOne;
     private String phoneTwo;
-    private Boolean status;
+    private boolean enabled;
 
 }

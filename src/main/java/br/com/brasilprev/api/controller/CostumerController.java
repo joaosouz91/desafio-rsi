@@ -1,5 +1,6 @@
 package br.com.brasilprev.api.controller;
 
+import br.com.brasilprev.api.model.dto.CostumerDTO;
 import br.com.brasilprev.api.event.CreatedResourceEvent;
 import br.com.brasilprev.api.event.UpdatedResourceEvent;
 import br.com.brasilprev.api.model.Costumer;
@@ -25,14 +26,14 @@ public class CostumerController {
     private ApplicationEventPublisher eventPublisher;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Costumer> findById(@PathVariable("id") Long id) {
-        Costumer costumer = costumerService.findById(id);
-        return costumer != null ? ResponseEntity.ok(costumer) : ResponseEntity.notFound().build();
+    public ResponseEntity<CostumerDTO> findById(@PathVariable("id") Long id) {
+        CostumerDTO dto = costumerService.findById(id);
+        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<Costumer> create(@Valid @RequestBody Costumer costumer, HttpServletResponse response) {
-        Costumer created = costumerService.create(costumer);
+    public ResponseEntity<Costumer> create(@Valid @RequestBody CostumerDTO dto, HttpServletResponse response) {
+        Costumer created = costumerService.create(dto);
         eventPublisher.publishEvent(new CreatedResourceEvent(this, response, created.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -49,6 +50,5 @@ public class CostumerController {
         costumerService.delete(id);
         return ResponseEntity.ok().build();
     }
-
 
 }

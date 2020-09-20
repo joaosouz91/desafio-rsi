@@ -35,7 +35,7 @@ public class DesafioRsiExceptionHandler extends ResponseEntityExceptionHandler {
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		String userMessage = messageSource.getMessage("mensagem.invalida", null, LocaleContextHolder.getLocale());
+		String userMessage = messageSource.getMessage("invalid.message", null, LocaleContextHolder.getLocale());
 		String exception = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
 		return handleExceptionInternal(ex, new Error(userMessage, exception), headers, HttpStatus.BAD_REQUEST, request);
 	}
@@ -49,21 +49,21 @@ public class DesafioRsiExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler({EmptyResultDataAccessException.class})
 	protected ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex, WebRequest request) {
-		String userMessage = messageSource.getMessage("recurso.nao-encontrado", null, LocaleContextHolder.getLocale());
+		String userMessage = messageSource.getMessage("resource.not-found", null, LocaleContextHolder.getLocale());
 		String exception = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
 		return handleExceptionInternal(ex, new Error(userMessage, exception), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 	
 	@ExceptionHandler({DataIntegrityViolationException.class})
 	protected ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
-		String userMessage = messageSource.getMessage("recurso.operacao-nao-permitida", null, LocaleContextHolder.getLocale());
+		String userMessage = messageSource.getMessage("resource.operation-not-allowed", null, LocaleContextHolder.getLocale());
 		String exception = ExceptionUtils.getRootCauseMessage(ex); 
 		return handleExceptionInternal(ex, new Error(userMessage, exception), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 	
 	@ExceptionHandler({CostumerUnavailableException.class})
 	protected ResponseEntity<Object> handleCostumerUnavailableException(CostumerUnavailableException ex) {
-		String userMessage = messageSource.getMessage("costumer.inexistente-inativo", null, LocaleContextHolder.getLocale());
+		String userMessage = messageSource.getMessage("costumer.unavailable", null, LocaleContextHolder.getLocale());
 		String exception = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
 		return ResponseEntity.badRequest().body(Arrays.asList(new Error(userMessage, exception)));
 	}
