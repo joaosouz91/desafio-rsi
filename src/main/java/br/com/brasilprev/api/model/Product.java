@@ -18,6 +18,8 @@ import java.math.BigDecimal;
 @Table(name = "product")
 public class Product implements Model, Serializable {
 
+    private static final long serialVersionUID = -2886031201978035609L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

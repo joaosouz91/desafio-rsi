@@ -18,6 +18,8 @@ import java.util.List;
 @Table(name = "costumer")
 public class Costumer implements Model, Serializable {
 
+    private static final long serialVersionUID = 8047222656468025391L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 public class CostumerAddressMapper implements Mapper<CostumerAddressDTO, CostumerAddress> {
 
     @Override
+    @Deprecated
     public CostumerAddress convertDtoToModel(CostumerAddressDTO dto) {
         return null;
     }

@@ -67,6 +67,13 @@ public class DesafioRsiExceptionHandler extends ResponseEntityExceptionHandler {
 		String exception = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
 		return ResponseEntity.badRequest().body(Arrays.asList(new Error(userMessage, exception)));
 	}
+
+	@ExceptionHandler({ProductUnavailableException.class})
+	protected ResponseEntity<Object> handleProductUnavailableException(ProductUnavailableException ex) {
+		String userMessage = messageSource.getMessage("product.unavailable", null, LocaleContextHolder.getLocale());
+		String exception = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
+		return ResponseEntity.badRequest().body(Arrays.asList(new Error(userMessage, exception)));
+	}
 	
 	private List<Error> createErrorList(BindingResult bindingResult){
 		List<Error> errors = new ArrayList<Error>();

@@ -41,8 +41,7 @@ public class ProductService {
     public Product create(ProductDTO dto) {
         if(dto.getId() != null)
             throw new HttpMessageNotReadableException(
-                messageSource.getMessage("request.out.of.scope",
-                        null, LocaleContextHolder.getLocale()));
+                messageSource.getMessage("request.out.of.scope", null, LocaleContextHolder.getLocale()));
         return productRepository.save(productMapper.convertDtoToModel(dto));
     }
 

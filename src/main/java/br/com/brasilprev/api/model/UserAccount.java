@@ -15,6 +15,8 @@ import java.io.Serializable;
 @Table(name = "user_account")
 public class UserAccount implements Model, Serializable {
 
+    private static final long serialVersionUID = 7234494484529979154L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

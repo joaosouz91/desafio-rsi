@@ -19,6 +19,8 @@ import java.util.List;
 @Table(name = "\"order\"")
 public class Order implements Model, Serializable {
 
+    private static final long serialVersionUID = -4645776022419571926L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

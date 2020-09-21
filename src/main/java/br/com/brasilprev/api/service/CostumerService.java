@@ -41,8 +41,7 @@ public class CostumerService {
     public Costumer create(CostumerDTO dto) {
         if(dto.getId() != null)
             throw new HttpMessageNotReadableException(
-                    messageSource.getMessage("resource.id-not-allowed",
-                            null, LocaleContextHolder.getLocale()));
+                    messageSource.getMessage("resource.id-not-allowed", null, LocaleContextHolder.getLocale()));
         return costumerRepository.save(costumerMapper.convertDtoToModel(dto));
     }
 

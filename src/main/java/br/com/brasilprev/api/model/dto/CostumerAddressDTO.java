@@ -6,11 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class CostumerAddressDTO implements AbstractDTO {
+public class CostumerAddressDTO implements AbstractDTO, Serializable {
+
+    private static final long serialVersionUID = 8991551307090072017L;
 
     private Long id;
     private String street;

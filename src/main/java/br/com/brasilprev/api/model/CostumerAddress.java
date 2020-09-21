@@ -17,6 +17,8 @@ import java.io.Serializable;
 @Table(name = "costumer_address")
 public class CostumerAddress implements Model, Serializable {
 
+    private static final long serialVersionUID = 5459075242343301188L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/costumers")
@@ -24,6 +25,12 @@ public class CostumerController {
 
     @Autowired
     private ApplicationEventPublisher eventPublisher;
+
+    @GetMapping()
+    public ResponseEntity<List<CostumerDTO>> findById() {
+        List<CostumerDTO> dtoList = costumerService.findAll();
+        return dtoList != null ? ResponseEntity.ok(dtoList) : ResponseEntity.notFound().build();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<CostumerDTO> findById(@PathVariable("id") Long id) {

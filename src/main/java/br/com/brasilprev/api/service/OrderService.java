@@ -1,10 +1,15 @@
 package br.com.brasilprev.api.service;
 
-import br.com.brasilprev.api.model.dto.OrderDTO;
+import br.com.brasilprev.api.exception.CostumerUnavailableException;
+import br.com.brasilprev.api.exception.ProductUnavailableException;
+import br.com.brasilprev.api.model.Costumer;
 import br.com.brasilprev.api.model.Order;
-import br.com.brasilprev.api.model.LineItem;
+import br.com.brasilprev.api.model.Product;
+import br.com.brasilprev.api.model.dto.OrderDTO;
 import br.com.brasilprev.api.model.mapper.OrderMapper;
+import br.com.brasilprev.api.repository.CostumerRepository;
 import br.com.brasilprev.api.repository.OrderRepository;
+import br.com.brasilprev.api.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -12,8 +17,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,10 +30,10 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
-    private CostumerService costumerService;
+    private CostumerRepository costumerRepository;
 
     @Autowired
-    private ProductService productService;
+    private ProductRepository productRepository;
 
     @Autowired
     private OrderMapper orderMapper;
@@ -47,17 +54,16 @@ public class OrderService {
     }
 
     public Order create(OrderDTO dto) {
-        if(dto.getId() != null)
-            throw new HttpMessageNotReadableException(
-                    messageSource.getMessage("request.out.of.scope",
-                            null, LocaleContextHolder.getLocale()));
-        return orderRepository.save(orderMapper.convertDtoToModel(dto));
+        validateDtoCreationScope(dto);
+        Costumer costumer = costumerRepository.findOne(dto.getIdCostumer());
+        Set<Product> productSet = dto.getProductList().stream().map(p -> productRepository.findOne(p.getIdProduct())).collect(Collectors.toSet());
+        return orderRepository.save(orderMapper.convertDtoToModel(dto, productSet, costumer));
     }
 
     public Order update(Order order) {
         if(order.getId() == null)
             throw new HttpMessageNotReadableException(
-                    messageSource.getMessage("request.out.of.scope",
+                    messageSource.getMessage("resource.id-missing",
                             null, LocaleContextHolder.getLocale()));
         return orderRepository.save(order);
     }
@@ -66,22 +72,25 @@ public class OrderService {
         orderRepository.delete(id);
     }
 
-    private BigDecimal getOrderTotalWithDiscount(BigDecimal total, Double discount) {
-        return total
-                .subtract(total.multiply(BigDecimal.valueOf(discount/100)))
-                .setScale(2, BigDecimal.ROUND_FLOOR);
+    private void validateDtoCreationScope(OrderDTO dto) {
+
+        if(dto.getId() != null) {
+            throw new HttpMessageNotReadableException(
+                    messageSource.getMessage("resource.id-not-allowed", null, LocaleContextHolder.getLocale()));
+        }
+
+        Costumer costumer = costumerRepository.findOne(dto.getIdCostumer());
+        if(costumer == null || !costumer.getStatus().getBoolean()) {
+            throw new CostumerUnavailableException();
+        }
+
+        dto.getProductList().forEach(p -> {
+            Product product = productRepository.findOne(p.getIdProduct());
+            if(product == null || !product.getStatus().getBoolean()) {
+                throw new ProductUnavailableException();
+            }
+        });
     }
 
-    private BigDecimal getSellingPriceSum(List<LineItem> lineItemList) {
-        return lineItemList.stream()
-                .map(item -> item.getSellingPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    private BigDecimal getCurrentPriceSum(List<LineItem> lineItemList) {
-        return lineItemList.stream()
-                .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
 
 }
