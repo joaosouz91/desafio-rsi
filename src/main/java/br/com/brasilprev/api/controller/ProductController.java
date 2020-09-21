@@ -2,7 +2,6 @@ package br.com.brasilprev.api.controller;
 
 import br.com.brasilprev.api.model.dto.ProductDTO;
 import br.com.brasilprev.api.event.CreatedResourceEvent;
-import br.com.brasilprev.api.event.UpdatedResourceEvent;
 import br.com.brasilprev.api.model.Product;
 import br.com.brasilprev.api.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,6 @@ public class ProductController {
     @PutMapping
     public ResponseEntity<Product> update(@Valid @RequestBody Product product, HttpServletResponse response) {
         Product updated = productService.update(product);
-        eventPublisher.publishEvent(new UpdatedResourceEvent(this, response, updated.getId()));
         return ResponseEntity.ok(updated);
     }
 

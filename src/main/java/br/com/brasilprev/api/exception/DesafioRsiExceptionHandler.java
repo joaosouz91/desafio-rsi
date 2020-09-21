@@ -68,6 +68,13 @@ public class DesafioRsiExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity.badRequest().body(Arrays.asList(new Error(userMessage, exception)));
 	}
 
+	@ExceptionHandler({AddressUnavailableException.class})
+	protected ResponseEntity<Object> handleAddressUnavailableException(AddressUnavailableException ex) {
+		String userMessage = messageSource.getMessage("address.unavailable", null, LocaleContextHolder.getLocale());
+		String exception = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
+		return ResponseEntity.badRequest().body(Arrays.asList(new Error(userMessage, exception)));
+	}
+
 	@ExceptionHandler({ProductUnavailableException.class})
 	protected ResponseEntity<Object> handleProductUnavailableException(ProductUnavailableException ex) {
 		String userMessage = messageSource.getMessage("product.unavailable", null, LocaleContextHolder.getLocale());

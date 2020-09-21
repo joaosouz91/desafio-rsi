@@ -79,8 +79,7 @@ public class OrderMapper implements Mapper<OrderDTO, Order> {
                         .collect(Collectors.toList()),
                 model.getDiscount(),
                 model.getTotalPrice(),
-                model.getStatus().toString(),
-                null);
+                model.getStatus().toString());
     }
 
 

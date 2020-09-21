@@ -2,7 +2,6 @@ package br.com.brasilprev.api.controller;
 
 import br.com.brasilprev.api.model.dto.OrderDTO;
 import br.com.brasilprev.api.event.CreatedResourceEvent;
-import br.com.brasilprev.api.event.UpdatedResourceEvent;
 import br.com.brasilprev.api.model.Order;
 import br.com.brasilprev.api.model.Product;
 import br.com.brasilprev.api.service.OrderService;
@@ -48,7 +47,6 @@ public class OrderController {
     @PutMapping
     public ResponseEntity<Order> update(@Valid @RequestBody Order order, HttpServletResponse response) {
         Order updated = orderService.update(order);
-        eventPublisher.publishEvent(new UpdatedResourceEvent(this, response, updated.getId()));
         return ResponseEntity.ok(updated);
     }
 

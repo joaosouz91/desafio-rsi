@@ -2,7 +2,6 @@ package br.com.brasilprev.api.controller;
 
 import br.com.brasilprev.api.model.dto.CostumerDTO;
 import br.com.brasilprev.api.event.CreatedResourceEvent;
-import br.com.brasilprev.api.event.UpdatedResourceEvent;
 import br.com.brasilprev.api.model.Costumer;
 import br.com.brasilprev.api.model.Product;
 import br.com.brasilprev.api.service.CostumerService;
@@ -39,6 +38,7 @@ public class CostumerController {
     }
 
     @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<Costumer> create(@Valid @RequestBody CostumerDTO dto, HttpServletResponse response) {
         Costumer created = costumerService.create(dto);
         eventPublisher.publishEvent(new CreatedResourceEvent(this, response, created.getId()));
@@ -48,7 +48,6 @@ public class CostumerController {
     @PutMapping
     public ResponseEntity<Costumer> update(@Valid @RequestBody Costumer costumer, HttpServletResponse response) {
         Costumer updated = costumerService.update(costumer);
-        eventPublisher.publishEvent(new UpdatedResourceEvent(this, response, updated.getId()));
         return ResponseEntity.ok(updated);
     }
 

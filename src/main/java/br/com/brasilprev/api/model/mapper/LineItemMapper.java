@@ -6,8 +6,6 @@ import br.com.brasilprev.api.model.dto.LineItemDTO;
 import br.com.brasilprev.api.model.LineItem;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-
 @Component
 public class LineItemMapper implements Mapper<LineItemDTO, LineItem> {
 
@@ -28,13 +26,13 @@ public class LineItemMapper implements Mapper<LineItemDTO, LineItem> {
 
     @Override
     public LineItemDTO convertModelToDto(LineItem model) {
-
-        final LineItemDTO lineItemDTO = new LineItemDTO();
-        lineItemDTO.setIdProduct(model.getProduct().getId());
-        lineItemDTO.setName(model.getProduct().getName());
-        lineItemDTO.setSKU(model.getProduct().getSku());
-        lineItemDTO.setSellingPrice(model.getSellingPrice());
-
-        return lineItemDTO;
+        return new LineItemDTO(
+                model.getId(),
+                model.getOrder().getId(),
+                model.getProduct().getId(),
+                model.getQuantity(),
+                model.getProduct().getName(),
+                model.getProduct().getSku(),
+                model.getSellingPrice());
     }
 }

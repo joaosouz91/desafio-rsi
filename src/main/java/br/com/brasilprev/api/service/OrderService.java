@@ -1,5 +1,6 @@
 package br.com.brasilprev.api.service;
 
+import br.com.brasilprev.api.exception.AddressUnavailableException;
 import br.com.brasilprev.api.exception.CostumerUnavailableException;
 import br.com.brasilprev.api.exception.ProductUnavailableException;
 import br.com.brasilprev.api.model.Costumer;
@@ -17,8 +18,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -83,6 +82,12 @@ public class OrderService {
         if(costumer == null || !costumer.getStatus().getBoolean()) {
             throw new CostumerUnavailableException();
         }
+
+        costumer.getAdressList()
+                .stream()
+                .filter(address -> address.getId().equals(dto.getIdDeliveryAddress()))
+                .findFirst()
+                .orElseThrow(AddressUnavailableException::new);
 
         dto.getProductList().forEach(p -> {
             Product product = productRepository.findOne(p.getIdProduct());

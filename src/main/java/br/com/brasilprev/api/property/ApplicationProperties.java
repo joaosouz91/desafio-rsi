@@ -6,16 +6,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
 @ConfigurationProperties("desafiorsi")
-public class DesafioRsiProperties {
+public class ApplicationProperties {
 
     @Setter
-    private String originAllowed = "http://localhost:8000";
+    private String originAllowed = "http://localhost:8080";
 
-    private final Seguranca seguranca = new Seguranca();
+    private final Security security = new Security();
 
     @Getter
     @Setter
-    public static class Seguranca {
+    public static class Security {
 
         private boolean enableHttps;
 
