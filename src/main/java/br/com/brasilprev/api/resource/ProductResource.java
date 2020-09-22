@@ -1,4 +1,4 @@
-package br.com.brasilprev.api.controller;
+package br.com.brasilprev.api.resource;
 
 import br.com.brasilprev.api.model.dto.ProductDTO;
 import br.com.brasilprev.api.event.CreatedResourceEvent;
@@ -15,8 +15,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
-public class ProductController {
+@RequestMapping("/api/v1/products")
+public class ProductResource {
 
     @Autowired
     ProductService productService;
@@ -43,9 +43,10 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping
-    public ResponseEntity<Product> update(@Valid @RequestBody Product product, HttpServletResponse response) {
-        Product updated = productService.update(product);
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> update(@PathVariable("id") Long id, @Valid @RequestBody ProductDTO dto) {
+        dto.setId(id);
+        Product updated = productService.update(dto);
         return ResponseEntity.ok(updated);
     }
 

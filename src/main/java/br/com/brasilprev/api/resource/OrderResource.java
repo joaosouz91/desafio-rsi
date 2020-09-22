@@ -1,4 +1,4 @@
-package br.com.brasilprev.api.controller;
+package br.com.brasilprev.api.resource;
 
 import br.com.brasilprev.api.model.dto.OrderDTO;
 import br.com.brasilprev.api.event.CreatedResourceEvent;
@@ -16,8 +16,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/orders")
-public class OrderController {
+@RequestMapping("/api/v1/orders")
+public class OrderResource {
 
     @Autowired
     private OrderService orderService;
@@ -44,16 +44,16 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping
-    public ResponseEntity<Order> update(@Valid @RequestBody Order order, HttpServletResponse response) {
-        Order updated = orderService.update(order);
+    @PutMapping("/{id}")
+    public ResponseEntity<Order> updateStatus(@PathVariable("id") Long id) {
+        Order updated = orderService.updateStatus(id);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Product> delete(@PathVariable("id") Long id) {
-        orderService.delete(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Order> cancelOrder(@PathVariable("id") Long id) {
+        Order updated = orderService.cancelOrder(id);
+        return ResponseEntity.ok(updated);
     }
 
 }

@@ -45,12 +45,8 @@ public class CostumerService {
         return costumerRepository.save(costumerMapper.convertDtoToModel(dto));
     }
 
-    public Costumer update(Costumer costumer) {
-        if(costumer.getId() == null)
-            throw new HttpMessageNotReadableException(
-                    messageSource.getMessage("resource.id-missing",
-                            null, LocaleContextHolder.getLocale()));
-        return costumerRepository.save(costumer);
+    public Costumer update(CostumerDTO dto) {
+        return costumerRepository.save(costumerMapper.convertDtoToModel(dto));
     }
 
     public void delete(Long id) {

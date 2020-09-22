@@ -19,11 +19,11 @@ import java.util.Set;
 public class AppUserDetailService implements UserDetailsService {
 
 	@Autowired
-	private UserAccountRepository usuarioRepository;
+	private UserAccountRepository userAccountRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Optional<UserAccount> userAccountOptional = usuarioRepository.findByEmail(email);
+		Optional<UserAccount> userAccountOptional = userAccountRepository.findByEmail(email);
 		UserAccount userAccount = userAccountOptional.orElseThrow(()-> new UsernameNotFoundException(""));
 		return new SystemUser(userAccount, getPermissions(userAccount));
 	}

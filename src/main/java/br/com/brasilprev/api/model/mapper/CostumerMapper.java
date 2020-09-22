@@ -14,6 +14,24 @@ public class CostumerMapper implements Mapper<CostumerDTO, Costumer> {
     @Autowired
     private CostumerAddressMapper costumerAddressMapper;
 
+    public Costumer convertDtoToCostumerPatch(CostumerDTO dto) {
+
+        final Costumer costumer = new Costumer();
+        costumer.setId(dto.getId());
+        costumer.setName(dto.getName());
+        costumer.setPhoneOne(dto.getPhoneOne());
+        costumer.setPhoneTwo(dto.getPhoneTwo());
+        costumer.setStatus(dto.isEnabled() ? ModelStatus.ENABLED : ModelStatus.DISABLED);
+
+        costumer.setAdressList(
+                dto.getAddressList()
+                        .stream()
+                        .map(address -> costumerAddressMapper.convertDtoToModel(address, costumer))
+                        .collect(Collectors.toList()));
+
+        return costumer;
+    }
+
     @Override
     public Costumer convertDtoToModel(CostumerDTO dto) {
 

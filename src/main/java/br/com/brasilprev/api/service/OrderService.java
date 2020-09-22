@@ -7,6 +7,7 @@ import br.com.brasilprev.api.model.Costumer;
 import br.com.brasilprev.api.model.Order;
 import br.com.brasilprev.api.model.Product;
 import br.com.brasilprev.api.model.dto.OrderDTO;
+import br.com.brasilprev.api.model.enumerator.OrderStatus;
 import br.com.brasilprev.api.model.mapper.OrderMapper;
 import br.com.brasilprev.api.repository.CostumerRepository;
 import br.com.brasilprev.api.repository.OrderRepository;
@@ -18,6 +19,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -53,25 +55,37 @@ public class OrderService {
     }
 
     public Order create(OrderDTO dto) {
-        validateDtoCreationScope(dto);
+        validateCreationScope(dto);
         Costumer costumer = costumerRepository.findOne(dto.getIdCostumer());
         Set<Product> productSet = dto.getProductList().stream().map(p -> productRepository.findOne(p.getIdProduct())).collect(Collectors.toSet());
         return orderRepository.save(orderMapper.convertDtoToModel(dto, productSet, costumer));
     }
 
-    public Order update(Order order) {
-        if(order.getId() == null)
-            throw new HttpMessageNotReadableException(
-                    messageSource.getMessage("resource.id-missing",
-                            null, LocaleContextHolder.getLocale()));
+    public Order updateStatus(Long id) {
+        Order order = orderRepository.findOne(id);
+        validateStatusUpdate(order);
+        order.setStatus(order.getStatus().getNext());
+        if (order.getStatus().equals(OrderStatus.DELIVERED)) order.setEndDate(LocalDate.now());
         return orderRepository.save(order);
     }
 
-    public void delete(Long id) {
-        orderRepository.delete(id);
+    public Order cancelOrder(Long id) {
+        Order order = orderRepository.findOne(id);
+        // call chargeback treatments
+        validateStatusUpdate(order);
+        order.setEndDate(LocalDate.now());
+        order.setStatus(OrderStatus.CANCELED);
+        return orderRepository.save(order);
     }
 
-    private void validateDtoCreationScope(OrderDTO dto) {
+    private void validateStatusUpdate(Order order) {
+        if(order.getStatus().equals(OrderStatus.CANCELED)
+                || order.getStatus().equals(OrderStatus.DELIVERED))
+            throw new HttpMessageNotReadableException(
+                    messageSource.getMessage("orderstatus.update-not-allowed", null, LocaleContextHolder.getLocale()));
+    }
+
+    private void validateCreationScope(OrderDTO dto) {
 
         if(dto.getId() != null) {
             throw new HttpMessageNotReadableException(

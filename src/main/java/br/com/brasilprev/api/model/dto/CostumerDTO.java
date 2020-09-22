@@ -23,8 +23,8 @@ public class CostumerDTO implements AbstractDTO, Serializable {
     @NotNull
     private String name;
 
-    @NotNull
     @Valid
+    @NotNull
     private List<CostumerAddressDTO> addressList;
 
     @NotNull

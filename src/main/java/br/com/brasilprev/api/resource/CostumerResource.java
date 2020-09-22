@@ -1,4 +1,4 @@
-package br.com.brasilprev.api.controller;
+package br.com.brasilprev.api.resource;
 
 import br.com.brasilprev.api.model.dto.CostumerDTO;
 import br.com.brasilprev.api.event.CreatedResourceEvent;
@@ -16,8 +16,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/costumers")
-public class CostumerController {
+@RequestMapping("/api/v1/costumers")
+public class CostumerResource {
 
     @Autowired
     private CostumerService costumerService;
@@ -38,16 +38,16 @@ public class CostumerController {
     }
 
     @PostMapping
-    @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<Costumer> create(@Valid @RequestBody CostumerDTO dto, HttpServletResponse response) {
         Costumer created = costumerService.create(dto);
         eventPublisher.publishEvent(new CreatedResourceEvent(this, response, created.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PutMapping
-    public ResponseEntity<Costumer> update(@Valid @RequestBody Costumer costumer, HttpServletResponse response) {
-        Costumer updated = costumerService.update(costumer);
+    @PutMapping("/{id}")
+    public ResponseEntity<Costumer> update(@PathVariable("id") Long id, @Valid @RequestBody CostumerDTO dto) {
+        dto.setId(id);
+        Costumer updated = costumerService.update(dto);
         return ResponseEntity.ok(updated);
     }
 

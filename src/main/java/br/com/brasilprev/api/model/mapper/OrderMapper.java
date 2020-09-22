@@ -3,7 +3,7 @@ package br.com.brasilprev.api.model.mapper;
 import br.com.brasilprev.api.model.*;
 import br.com.brasilprev.api.model.dto.OrderDTO;
 import br.com.brasilprev.api.model.enumerator.OrderStatus;
-import br.com.brasilprev.api.util.CalcUtils;
+import br.com.brasilprev.api.service.CalculatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +18,9 @@ public class OrderMapper implements Mapper<OrderDTO, Order> {
 
     @Autowired
     private LineItemMapper lineItemMapper;
+
+    @Autowired
+    private CalculatorService calculatorService;
 
     @Override
     @Deprecated
@@ -50,8 +53,8 @@ public class OrderMapper implements Mapper<OrderDTO, Order> {
 
         final LocalDate creationDate = LocalDate.now();
 
-        final BigDecimal totalPrice = CalcUtils.getOrderTotalWithDiscount(
-                CalcUtils.getCurrentPriceSum(lineItemList),
+        final BigDecimal totalPrice = calculatorService.getOrderTotalWithDiscount(
+                calculatorService.getCurrentPriceSum(lineItemList),
                 dto.getDiscount());
 
         order.setCostumer(costumer);

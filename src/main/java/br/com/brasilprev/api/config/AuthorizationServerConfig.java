@@ -18,7 +18,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import java.util.Arrays;
 
-@Profile("oauth-security")
+@Profile({"docker", "dev", "prod"})
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {

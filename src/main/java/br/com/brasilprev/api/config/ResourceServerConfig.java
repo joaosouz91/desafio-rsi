@@ -18,7 +18,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
-@Profile("oauth-security")
+@Profile({"docker", "dev", "prod"})
 @Configuration
 @EnableWebSecurity
 @EnableResourceServer
@@ -41,6 +41,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				.antMatchers("/products").permitAll()
+				.antMatchers("/v2/api-docs", "/configuration/**", "/swagger-resources/**",  "/swagger-ui.html", "/webjars/**", "/api-docs/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
@@ -51,6 +52,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
 		resources.stateless(true);
 	}
+
+
 
 	@Bean
 	public MethodSecurityExpressionHandler createExpressionHandler() {
