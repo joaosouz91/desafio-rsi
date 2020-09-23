@@ -53,8 +53,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 		resources.stateless(true);
 	}
 
-
-
 	@Bean
 	public MethodSecurityExpressionHandler createExpressionHandler() {
 		return new OAuth2MethodSecurityExpressionHandler();

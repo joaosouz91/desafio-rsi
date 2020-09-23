@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +37,7 @@ public class ProductResource {
             @ApiResponse(code = 404, message = "No Product found to display")
     })
     @GetMapping(produces = "application/json")
+    @PreAuthorize("hasAuthority('ROLE_SEARCH_PRODUCT') and #oauth2.hasScope('read')")
     public ResponseEntity<List<ProductDTO>> findAll() {
         List<ProductDTO> dtoList = productService.findAll();
         return dtoList != null ? ResponseEntity.ok(dtoList) : ResponseEntity.notFound().build();
@@ -46,6 +48,7 @@ public class ProductResource {
             @ApiResponse(code = 404, message = "No Product found to display")
     })
     @GetMapping(value = "/{id}", produces = "application/json")
+    @PreAuthorize("hasAuthority('ROLE_SEARCH_PRODUCT') and #oauth2.hasScope('read')")
     public ResponseEntity<ProductDTO> findById(@PathVariable("id") Long id) {
         ProductDTO dto = productService.findById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
@@ -56,6 +59,7 @@ public class ProductResource {
     })
     @PostMapping(consumes = "application/json")
     @ResponseStatus(value = HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ROLE_CREATE_PRODUCT') and #oauth2.hasScope('read')")
     public ResponseEntity<Void> create(@Valid @RequestBody ProductDTO dto, HttpServletResponse response) {
         Product created = productService.create(dto);
         eventPublisher.publishEvent(new CreatedResourceEvent(this, response, created.getId()));
@@ -67,6 +71,7 @@ public class ProductResource {
             @ApiResponse(code = 404, message = "No Product found to update")
     })
     @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
+    @PreAuthorize("hasAuthority('ROLE_UPDATE_PRODUCT') and #oauth2.hasScope('read')")
     public ResponseEntity<ProductDTO> update(@PathVariable("id") Long id, @Valid @RequestBody ProductDTO dto) {
         dto.setId(id);
         ProductDTO updated = productService.update(dto); //todo retornar dto
@@ -78,6 +83,7 @@ public class ProductResource {
             @ApiResponse(code = 404, message = "No Product found to delete")
     })
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_REMOVE_PRODUCT') and #oauth2.hasScope('read')")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         productService.delete(id);
         return ResponseEntity.ok().build();

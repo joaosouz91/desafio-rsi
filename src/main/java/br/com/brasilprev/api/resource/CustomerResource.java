@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +36,7 @@ public class CustomerResource {
             @ApiResponse(code = 404, message = "No Customer found to display")
     })
     @GetMapping(produces = "application/json")
+    @PreAuthorize("hasAuthority('ROLE_SEARCH_CUSTOMER') and #oauth2.hasScope('read')")
     public ResponseEntity<List<CustomerDTO>> findAll() {
         List<CustomerDTO> dtoList = customerService.findAll();
         return dtoList != null ? ResponseEntity.ok(dtoList) : ResponseEntity.notFound().build();
@@ -45,6 +47,7 @@ public class CustomerResource {
             @ApiResponse(code = 404, message = "No Customer found to display")
     })
     @GetMapping(value = "/{id}", produces = "application/json")
+    @PreAuthorize("hasAuthority('ROLE_SEARCH_CUSTOMER') and #oauth2.hasScope('read')")
     public ResponseEntity<CustomerDTO> findById(@PathVariable("id") Long id) {
         CustomerDTO dto = customerService.findById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
@@ -55,6 +58,7 @@ public class CustomerResource {
     })
     @PostMapping(consumes = "application/json")
     @ResponseStatus(value = HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ROLE_CREATE_CUSTOMER') and #oauth2.hasScope('read')")
     public ResponseEntity<Void> create(@Valid @RequestBody CustomerDTO costumerDTO, HttpServletResponse response) {
         Customer created = customerService.create(costumerDTO);
         eventPublisher.publishEvent(new CreatedResourceEvent(this, response, created.getId()));
@@ -66,6 +70,7 @@ public class CustomerResource {
             @ApiResponse(code = 404, message = "No Customer found to update")
     })
     @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
+    @PreAuthorize("hasAuthority('ROLE_UPDATE_CUSTOMER') and #oauth2.hasScope('read')")
     public ResponseEntity<CustomerDTO> update(@PathVariable("id") Long id, @Valid @RequestBody CustomerDTO dto) {
         dto.setId(id);
         CustomerDTO updated = customerService.update(dto);
@@ -77,6 +82,7 @@ public class CustomerResource {
             @ApiResponse(code = 404, message = "No Customer found to delete")
     })
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_REMOVE_CUSTOMER') and #oauth2.hasScope('read')")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         customerService.delete(id);
         return ResponseEntity.ok().build();

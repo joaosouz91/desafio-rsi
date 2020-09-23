@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -36,6 +37,7 @@ public class OrderResource {
             @ApiResponse(code = 404, message = "No Order found to display")
     })
     @GetMapping(produces = "application/json")
+    @PreAuthorize("hasAuthority('ROLE_SEARCH_ORDER') and #oauth2.hasScope('read')")
     public ResponseEntity<List<OrderDTO>> findAll() {
         List<OrderDTO> dtoList = orderService.findAll();
         return dtoList != null ? ResponseEntity.ok(dtoList) : ResponseEntity.notFound().build();
@@ -46,6 +48,7 @@ public class OrderResource {
             @ApiResponse(code = 404, message = "No Order found to display")
     })
     @GetMapping(value = "/{id}", produces = "application/json")
+    @PreAuthorize("hasAuthority('ROLE_SEARCH_ORDER') and #oauth2.hasScope('read')")
     public ResponseEntity<OrderDTO> findById(@PathVariable("id") Long id) {
         OrderDTO dto = orderService.findById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
@@ -56,6 +59,7 @@ public class OrderResource {
     })
     @PostMapping(consumes = "application/json")
     @ResponseStatus(value = HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ROLE_CREATE_ORDER') and #oauth2.hasScope('read')")
     public ResponseEntity<Void> create(@Valid @RequestBody OrderDTO orderDTO, HttpServletResponse response) {
         Order created = orderService.create(orderDTO);
         eventPublisher.publishEvent(new CreatedResourceEvent(this, response, created.getId()));
@@ -67,6 +71,7 @@ public class OrderResource {
             @ApiResponse(code = 404, message = "No Order found to update")
     })
     @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
+    @PreAuthorize("hasAuthority('ROLE_UPDATE_ORDER') and #oauth2.hasScope('read')")
     public ResponseEntity<OrderDTO> updateStatus(@PathVariable("id") Long id) {
          OrderDTO updated = orderService.updateStatus(id);
         return ResponseEntity.ok(updated);
@@ -77,6 +82,7 @@ public class OrderResource {
             @ApiResponse(code = 404, message = "No Order found to cancel")
     })
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_REMOVE_ORDER') and #oauth2.hasScope('read')")
     public ResponseEntity<OrderDTO> cancelOrder(@PathVariable("id") Long id) {
         OrderDTO updated = orderService.cancelOrder(id);
         return ResponseEntity.ok(updated);

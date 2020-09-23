@@ -8,6 +8,10 @@ Possuir o [Docker](https://www.docker.com/) em execução na máquina.
 
 Estar com a `porta 8080` da máquina liberada.
 
+
+
+
+
 ## Instalação
 
 Após o `git clone`, execute o comando abaixo na pasta raiz do projeto.
@@ -28,7 +32,7 @@ localhost:8080
 
 ## Obtendo um accessToken
 
-- Abra o [Postman](https://www.postman.com/)¹, inicie uma nova requisição e cole a URL abaixo na barra de endereços.
+- Abra o [Postman](https://www.postman.com/), inicie uma nova requisição e cole a URL abaixo na barra de endereços.
 
 ```bash
 http://localhost:8080/oauth/token
@@ -77,6 +81,16 @@ Para fazer, por exemplo, uma consulta de Produtos, dirija-se a aba `Authenticati
 
 Pensando em consumação da API por aplicações terceiras, é possível recuperar também um `refreshToken` após a requisição de um `accessToken`; seu valor estará em um Cookie retornado por esta requisição, podendo ser passado como parâmetro para obtenção de um novo accessToken sem a necessidade de inserir parâmetros de autenticação à nível de usuário (como os contidos no request-body) em todas as requisições.  
 
+## Heroku
+
+Esta API também está na nuvem e pode ser acessada através do endereço:
+
+```bash
+https://desafio-rsi-simple-ecommmerce.herokuapp.com/
+```
+
+Todas as requisições demonstradas aqui podem ser aplicadas para este endpoint, considerando apenas que o `http` deverá ser trocado por `https`
+
 ## Algumas regras de negócio
 
 - Uma atualização na lista de produtos poderá ser realizada somente para o carrinho, enquanto este estiver sendo criado (carrinho não foi implementado ainda).
@@ -104,5 +118,8 @@ Pensando em consumação da API por aplicações terceiras, é possível recuper
 ## Considerações finais
 
 O objetivo desta POC é provar algumas capacidades técnicas solicitadas pela empresa RSI. O foco não foi  apresentar regras de negócio robustas, mas sim fazer um bom uso dos frameworks e ferramentas de mercado para conceber a arquitetura do projeto da melhor forma possível, considerando também o prazo de entrega.
+
+
+
 
 Thanks in advance.
