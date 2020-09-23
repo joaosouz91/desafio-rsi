@@ -1,8 +1,7 @@
 package br.com.brasilprev.api.model.mapper;
 
-import br.com.brasilprev.api.model.dto.CustomerDTO;
 import br.com.brasilprev.api.model.Customer;
-import br.com.brasilprev.api.model.enumerator.ModelStatus;
+import br.com.brasilprev.api.model.dto.CustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +21,7 @@ public class CustomerMapper implements Mapper<CustomerDTO, Customer> {
         customer.setName(dto.getName());
         customer.setPhoneOne(dto.getPhoneOne());
         customer.setPhoneTwo(dto.getPhoneTwo());
-        customer.setStatus(dto.isEnabled() ? ModelStatus.ENABLED : ModelStatus.DISABLED);
+        customer.setStatus(dto.getStatus());
 
         customer.setAdressList(
                 dto.getAddressList()
@@ -44,8 +43,7 @@ public class CustomerMapper implements Mapper<CustomerDTO, Customer> {
                         .collect(Collectors.toList()),
                 model.getPhoneOne(),
                 model.getPhoneTwo(),
-                model.getStatus() == ModelStatus.ENABLED
-        );
+                model.getStatus());
     }
 
 

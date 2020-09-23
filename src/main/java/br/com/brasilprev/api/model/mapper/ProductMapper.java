@@ -1,8 +1,7 @@
 package br.com.brasilprev.api.model.mapper;
 
-import br.com.brasilprev.api.model.dto.ProductDTO;
 import br.com.brasilprev.api.model.Product;
-import br.com.brasilprev.api.model.enumerator.ModelStatus;
+import br.com.brasilprev.api.model.dto.ProductDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,7 +15,7 @@ public class ProductMapper implements Mapper<ProductDTO, Product> {
                 dto.getDescription(),
                 dto.getSku(),
                 dto.getPrice(),
-                dto.isEnabled() ? ModelStatus.ENABLED : ModelStatus.DISABLED);
+                dto.getStatus());
     }
 
     @Override
@@ -27,6 +26,6 @@ public class ProductMapper implements Mapper<ProductDTO, Product> {
                 model.getDescription(),
                 model.getSku(),
                 model.getPrice(),
-                model.getStatus().getBoolean());
+                model.getStatus());
     }
 }

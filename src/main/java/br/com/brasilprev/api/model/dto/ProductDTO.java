@@ -1,5 +1,6 @@
 package br.com.brasilprev.api.model.dto;
 
+import br.com.brasilprev.api.model.enumerator.ModelStatus;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,6 +37,6 @@ public class ProductDTO implements AbstractDTO, Serializable {
     private BigDecimal price;
 
     @NotNull
-    private boolean enabled;
+    private ModelStatus status;
 
 }

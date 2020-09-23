@@ -1,7 +1,7 @@
 package br.com.brasilprev.api.service;
 
-import br.com.brasilprev.api.model.dto.ProductDTO;
 import br.com.brasilprev.api.model.Product;
+import br.com.brasilprev.api.model.dto.ProductDTO;
 import br.com.brasilprev.api.model.mapper.ProductMapper;
 import br.com.brasilprev.api.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +39,7 @@ public class ProductService {
     }
 
     public Product create(ProductDTO dto) {
-        if(dto.getId() != null)
-            throw new HttpMessageNotReadableException(
-                messageSource.getMessage("request.out.of.scope", null, LocaleContextHolder.getLocale()));
+        validateCreationScope(dto);
         return productRepository.save(productMapper.convertDtoToModel(dto));
     }
 
@@ -57,6 +55,15 @@ public class ProductService {
 
     public void delete(Long id) {
         productRepository.delete(id);
+    }
+
+    private void validateCreationScope(ProductDTO dto) {
+
+        if(dto.getId() != null)
+            throw new HttpMessageNotReadableException(
+                    messageSource.getMessage("request.out.of.scope", null, LocaleContextHolder.getLocale()));
+
+
     }
 
 

@@ -1,9 +1,9 @@
 package br.com.brasilprev.api.resource;
 
-import br.com.brasilprev.api.event.CreatedResourceEvent;
 import br.com.brasilprev.api.model.Customer;
 import br.com.brasilprev.api.model.dto.CustomerDTO;
 import br.com.brasilprev.api.service.CustomerService;
+import br.com.brasilprev.api.event.CreatedResourceEvent;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -19,7 +19,7 @@ import java.util.List;
 @ApiResponses(value = {
         @ApiResponse(code = 401, message = "Unauthorized access. Authentication needed"),
         @ApiResponse(code = 403, message = "Permission to access the resource denied"),
-        @ApiResponse(code = 500, message = "Internal Server Error [response specifies whether it's related to the request]")
+        @ApiResponse(code = 500, message = "Internal Server Error")
 })
 @RestController
 @RequestMapping("/api/v1/customers")
@@ -32,7 +32,7 @@ public class CustomerResource {
     private ApplicationEventPublisher eventPublisher;
 
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Returns the Customer (dto) list"),
+            @ApiResponse(code = 200, message = "Returns the Customer list"),
             @ApiResponse(code = 404, message = "No Customer found to display")
     })
     @GetMapping(produces = "application/json")
@@ -43,7 +43,7 @@ public class CustomerResource {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Returns the Customer (dto) from the pointed Id"),
+            @ApiResponse(code = 200, message = "Returns the Customer from the pointed Id"),
             @ApiResponse(code = 404, message = "No Customer found to display")
     })
     @GetMapping(value = "/{id}", produces = "application/json")
@@ -54,7 +54,8 @@ public class CustomerResource {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Customer successfully created")
+            @ApiResponse(code = 201, message = "Customer successfully created"),
+            @ApiResponse(code = 400, message = "Missing required field or invalid filed value")
     })
     @PostMapping(consumes = "application/json")
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -67,6 +68,7 @@ public class CustomerResource {
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Customer successfully updated"),
+            @ApiResponse(code = 400, message = "Missing required field or invalid field value"),
             @ApiResponse(code = 404, message = "No Customer found to update")
     })
     @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
@@ -79,6 +81,7 @@ public class CustomerResource {
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Customer successfully deleted"),
+            @ApiResponse(code = 400, message = "Operation not allowed. Costumer is in use by other entity registry"),
             @ApiResponse(code = 404, message = "No Customer found to delete")
     })
     @DeleteMapping("/{id}")

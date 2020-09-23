@@ -1,8 +1,8 @@
 package br.com.brasilprev.api.resource;
 
+import br.com.brasilprev.api.model.Product;
 import br.com.brasilprev.api.model.dto.ProductDTO;
 import br.com.brasilprev.api.event.CreatedResourceEvent;
-import br.com.brasilprev.api.model.Product;
 import br.com.brasilprev.api.service.ProductService;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -20,7 +20,7 @@ import java.util.List;
 @ApiResponses(value = {
         @ApiResponse(code = 401, message = "Unauthorized access. Authentication needed"),
         @ApiResponse(code = 403, message = "Permission to access the resource denied"),
-        @ApiResponse(code = 500, message = "Internal Server Error [response specifies whether it's related to the request]")
+        @ApiResponse(code = 500, message = "Internal Server Error")
 })
 @RestController
 @RequestMapping("/api/v1/products")
@@ -33,7 +33,7 @@ public class ProductResource {
     private ApplicationEventPublisher eventPublisher;
 
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Returns the Product (dto) list"),
+            @ApiResponse(code = 200, message = "Returns the Product list"),
             @ApiResponse(code = 404, message = "No Product found to display")
     })
     @GetMapping(produces = "application/json")
@@ -44,7 +44,7 @@ public class ProductResource {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Returns the Product (dto) from the pointed Id"),
+            @ApiResponse(code = 200, message = "Returns the Product from the pointed Id"),
             @ApiResponse(code = 404, message = "No Product found to display")
     })
     @GetMapping(value = "/{id}", produces = "application/json")
@@ -55,31 +55,34 @@ public class ProductResource {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Product successfully created")
+            @ApiResponse(code = 201, message = "Product successfully created"),
+            @ApiResponse(code = 400, message = "Missing required field or invalid field value")
     })
     @PostMapping(consumes = "application/json")
     @ResponseStatus(value = HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('ROLE_CREATE_PRODUCT') and #oauth2.hasScope('read')")
-    public ResponseEntity<Void> create(@Valid @RequestBody ProductDTO dto, HttpServletResponse response) {
-        Product created = productService.create(dto);
+    public ResponseEntity<Void> create(@Valid @RequestBody ProductDTO productDTO, HttpServletResponse response) {
+        Product created = productService.create(productDTO);
         eventPublisher.publishEvent(new CreatedResourceEvent(this, response, created.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Product successfully updated"),
+            @ApiResponse(code = 400, message = "Missing required field or invalid field value"),
             @ApiResponse(code = 404, message = "No Product found to update")
     })
     @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
     @PreAuthorize("hasAuthority('ROLE_UPDATE_PRODUCT') and #oauth2.hasScope('read')")
-    public ResponseEntity<ProductDTO> update(@PathVariable("id") Long id, @Valid @RequestBody ProductDTO dto) {
-        dto.setId(id);
-        ProductDTO updated = productService.update(dto); //todo retornar dto
+    public ResponseEntity<ProductDTO> update(@PathVariable("id") Long id, @Valid @RequestBody ProductDTO productDTO) {
+        productDTO.setId(id);
+        ProductDTO updated = productService.update(productDTO);
         return ResponseEntity.ok(updated);
     }
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Product successfully deleted"),
+            @ApiResponse(code = 400, message = "Operation not allowed. Product is in use by other entity registry"),
             @ApiResponse(code = 404, message = "No Product found to delete")
     })
     @DeleteMapping("/{id}")
