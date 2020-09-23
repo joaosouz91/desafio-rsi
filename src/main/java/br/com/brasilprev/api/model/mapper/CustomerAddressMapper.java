@@ -1,23 +1,23 @@
 package br.com.brasilprev.api.model.mapper;
 
-import br.com.brasilprev.api.model.dto.CostumerAddressDTO;
-import br.com.brasilprev.api.model.Costumer;
-import br.com.brasilprev.api.model.CostumerAddress;
+import br.com.brasilprev.api.model.dto.CustomerAddressDTO;
+import br.com.brasilprev.api.model.Customer;
+import br.com.brasilprev.api.model.CustomerAddress;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CostumerAddressMapper implements Mapper<CostumerAddressDTO, CostumerAddress> {
+public class CustomerAddressMapper implements Mapper<CustomerAddressDTO, CustomerAddress> {
 
     @Override
     @Deprecated
-    public CostumerAddress convertDtoToModel(CostumerAddressDTO dto) {
+    public CustomerAddress convertDtoToModel(CustomerAddressDTO dto) {
         return null;
     }
 
-    public CostumerAddress convertDtoToModel(CostumerAddressDTO dto, Costumer costumer) {
-        return new CostumerAddress(
+    public CustomerAddress convertDtoToModel(CustomerAddressDTO dto, Customer customer) {
+        return new CustomerAddress(
                 dto.getId(),
-                costumer,
+                customer,
                 dto.getStreet(),
                 dto.getNumber(),
                 dto.getCep(),
@@ -30,8 +30,8 @@ public class CostumerAddressMapper implements Mapper<CostumerAddressDTO, Costume
     }
 
     @Override
-    public CostumerAddressDTO convertModelToDto(CostumerAddress model) {
-        return new CostumerAddressDTO(
+    public CustomerAddressDTO convertModelToDto(CustomerAddress model) {
+        return new CustomerAddressDTO(
                 model.getId(),
                 model.getStreet(),
                 model.getNumber(),

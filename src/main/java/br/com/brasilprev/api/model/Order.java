@@ -27,13 +27,13 @@ public class Order implements Model, Serializable {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "id_costumer", referencedColumnName="id", nullable=false)
-    private Costumer costumer;
+    @JoinColumn(name = "id_customer", referencedColumnName="id", nullable=false)
+    private Customer customer;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "id_costumer_address", referencedColumnName="id", nullable=false)
-    private CostumerAddress costumerAddress;
+    @JoinColumn(name = "id_customer_address", referencedColumnName="id", nullable=false)
+    private CustomerAddress customerAddress;
 
     @NotNull
     @Column(name = "creation_date")

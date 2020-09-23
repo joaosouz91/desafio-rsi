@@ -28,7 +28,7 @@ public class OrderMapper implements Mapper<OrderDTO, Order> {
         return null;
     }
 
-    public Order convertDtoToModel(OrderDTO dto, Set<Product> productSet, Costumer costumer) {
+    public Order convertDtoToModel(OrderDTO dto, Set<Product> productSet, Customer customer) {
 
         final Order order = new Order();
 
@@ -45,7 +45,7 @@ public class OrderMapper implements Mapper<OrderDTO, Order> {
                     return null;
                 }).collect(Collectors.toList());
 
-        final CostumerAddress costumerAddress = costumer.getAdressList()
+        final CustomerAddress customerAddress = customer.getAdressList()
                 .stream()
                 .filter(address -> address.getId().equals(dto.getIdDeliveryAddress()))
                 .findFirst()
@@ -57,8 +57,8 @@ public class OrderMapper implements Mapper<OrderDTO, Order> {
                 calculatorService.getCurrentPriceSum(lineItemList),
                 dto.getDiscount());
 
-        order.setCostumer(costumer);
-        order.setCostumerAddress(costumerAddress);
+        order.setCustomer(customer);
+        order.setCustomerAddress(customerAddress);
         order.setCreationDate(creationDate);
         order.setLineItemList(lineItemList);
         order.setDiscount(dto.getDiscount());
@@ -72,8 +72,8 @@ public class OrderMapper implements Mapper<OrderDTO, Order> {
     public OrderDTO convertModelToDto(Order model) {
         return new OrderDTO(
                 model.getId(),
-                model.getCostumer().getId(),
-                model.getCostumerAddress().getId(),
+                model.getCustomer().getId(),
+                model.getCustomerAddress().getId(),
                 model.getCreationDate(),
                 model.getEndDate(),
                 model.getLineItemList()

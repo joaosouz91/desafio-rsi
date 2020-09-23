@@ -1,6 +1,6 @@
-CREATE TABLE costumer_address (
+CREATE TABLE customer_address (
     id BIGINT(20) PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    id_costumer BIGINT(20) NOT NULL,
+    id_customer BIGINT(20) NOT NULL,
     street VARCHAR(120) NOT NULL,
     number VARCHAR(12) NOT NULL,
     cep VARCHAR(9) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE costumer_address (
 )   ENGINE=InnoDB
     DEFAULT CHARSET=utf8;
 
-INSERT INTO costumer_address (id_costumer, street, number, cep, district, city, state, country, address_type) values (
+INSERT INTO customer_address (id_customer, street, number, cep, district, city, state, country, address_type) values (
     1,
     'Rua Galeão de Melo',
     '236',

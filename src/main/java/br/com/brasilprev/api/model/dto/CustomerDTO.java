@@ -1,5 +1,6 @@
 package br.com.brasilprev.api.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,10 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CostumerDTO implements AbstractDTO, Serializable {
+@JsonPropertyOrder({
+        "id", "name", "addressList", "phoneOne", "phoneTwo", "enabled"
+})
+public class CustomerDTO implements AbstractDTO, Serializable {
 
     private static final long serialVersionUID = 6376627089798654847L;
 
@@ -25,7 +29,7 @@ public class CostumerDTO implements AbstractDTO, Serializable {
 
     @Valid
     @NotNull
-    private List<CostumerAddressDTO> addressList;
+    private List<CustomerAddressDTO> addressList;
 
     @NotNull
     private String phoneOne;

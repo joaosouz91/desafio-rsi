@@ -45,12 +45,14 @@ public class ProductService {
         return productRepository.save(productMapper.convertDtoToModel(dto));
     }
 
-    public Product update(ProductDTO dto) {
+    public ProductDTO update(ProductDTO dto) {
         if(dto.getId() == null)
             throw new HttpMessageNotReadableException(
                     messageSource.getMessage("request.out.of.scope",
                             null, LocaleContextHolder.getLocale()));
-        return productRepository.save(productMapper.convertDtoToModel(dto));
+        return productMapper.convertModelToDto(
+                productRepository.save(
+                        productMapper.convertDtoToModel(dto)));
     }
 
     public void delete(Long id) {

@@ -1,11 +1,10 @@
 package br.com.brasilprev.api.resource;
 
-import br.com.brasilprev.api.model.dto.ProductDTO;
 import br.com.brasilprev.api.event.CreatedResourceEvent;
-import br.com.brasilprev.api.model.Product;
-import br.com.brasilprev.api.service.ProductService;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import br.com.brasilprev.api.model.Customer;
+import br.com.brasilprev.api.model.dto.CustomerDTO;
+import br.com.brasilprev.api.service.CustomerService;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -22,64 +21,64 @@ import java.util.List;
         @ApiResponse(code = 500, message = "Internal Server Error [response specifies whether it's related to the request]")
 })
 @RestController
-@RequestMapping("/api/v1/products")
-public class ProductResource {
+@RequestMapping("/api/v1/customers")
+public class CustomerResource {
 
     @Autowired
-    ProductService productService;
+    private CustomerService customerService;
 
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Returns the Product (dto) list"),
-            @ApiResponse(code = 404, message = "No Product found to display")
+            @ApiResponse(code = 200, message = "Returns the Customer (dto) list"),
+            @ApiResponse(code = 404, message = "No Customer found to display")
     })
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<ProductDTO>> findAll() {
-        List<ProductDTO> dtoList = productService.findAll();
+    public ResponseEntity<List<CustomerDTO>> findAll() {
+        List<CustomerDTO> dtoList = customerService.findAll();
         return dtoList != null ? ResponseEntity.ok(dtoList) : ResponseEntity.notFound().build();
     }
 
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Returns the Product (dto) from the pointed Id"),
-            @ApiResponse(code = 404, message = "No Product found to display")
+            @ApiResponse(code = 200, message = "Returns the Customer (dto) from the pointed Id"),
+            @ApiResponse(code = 404, message = "No Customer found to display")
     })
     @GetMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<ProductDTO> findById(@PathVariable("id") Long id) {
-        ProductDTO dto = productService.findById(id);
+    public ResponseEntity<CustomerDTO> findById(@PathVariable("id") Long id) {
+        CustomerDTO dto = customerService.findById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Product successfully created")
+            @ApiResponse(code = 201, message = "Customer successfully created")
     })
     @PostMapping(consumes = "application/json")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<Void> create(@Valid @RequestBody ProductDTO dto, HttpServletResponse response) {
-        Product created = productService.create(dto);
+    public ResponseEntity<Void> create(@Valid @RequestBody CustomerDTO costumerDTO, HttpServletResponse response) {
+        Customer created = customerService.create(costumerDTO);
         eventPublisher.publishEvent(new CreatedResourceEvent(this, response, created.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Product successfully updated"),
-            @ApiResponse(code = 404, message = "No Product found to update")
+            @ApiResponse(code = 200, message = "Customer successfully updated"),
+            @ApiResponse(code = 404, message = "No Customer found to update")
     })
     @PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<ProductDTO> update(@PathVariable("id") Long id, @Valid @RequestBody ProductDTO dto) {
+    public ResponseEntity<CustomerDTO> update(@PathVariable("id") Long id, @Valid @RequestBody CustomerDTO dto) {
         dto.setId(id);
-        ProductDTO updated = productService.update(dto); //todo retornar dto
+        CustomerDTO updated = customerService.update(dto);
         return ResponseEntity.ok(updated);
     }
 
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Product successfully deleted"),
-            @ApiResponse(code = 404, message = "No Product found to delete")
+            @ApiResponse(code = 200, message = "Customer successfully deleted"),
+            @ApiResponse(code = 404, message = "No Customer found to delete")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
-        productService.delete(id);
+        customerService.delete(id);
         return ResponseEntity.ok().build();
     }
 

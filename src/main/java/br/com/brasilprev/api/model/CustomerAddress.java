@@ -14,8 +14,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
-@Table(name = "costumer_address")
-public class CostumerAddress implements Model, Serializable {
+@Table(name = "customer_address")
+public class CustomerAddress implements Model, Serializable {
 
     private static final long serialVersionUID = 5459075242343301188L;
 
@@ -25,8 +25,8 @@ public class CostumerAddress implements Model, Serializable {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name="id_costumer", referencedColumnName="id", nullable=false)
-    private Costumer costumer;
+    @JoinColumn(name="id_customer", referencedColumnName="id", nullable=false)
+    private Customer customer;
 
     @NotNull
     private String street;

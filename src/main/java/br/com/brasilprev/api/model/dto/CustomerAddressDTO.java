@@ -1,6 +1,7 @@
 package br.com.brasilprev.api.model.dto;
 
 import br.com.brasilprev.api.model.enumerator.AddressType;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CostumerAddressDTO implements AbstractDTO, Serializable {
+@JsonPropertyOrder({
+        "id", "street", "number", "cep", "district", "city", "state", "addressType"
+})
+public class CustomerAddressDTO implements AbstractDTO, Serializable {
 
     private static final long serialVersionUID = 8991551307090072017L;
 

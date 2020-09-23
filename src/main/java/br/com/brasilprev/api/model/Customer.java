@@ -15,8 +15,8 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "costumer")
-public class Costumer implements Model, Serializable {
+@Table(name = "customer")
+public class Customer implements Model, Serializable {
 
     private static final long serialVersionUID = 8047222656468025391L;
 
@@ -28,8 +28,8 @@ public class Costumer implements Model, Serializable {
     @Size(min = 3, max = 60)
     private String name;
 
-    @OneToMany(mappedBy = "costumer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<CostumerAddress> adressList;
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CustomerAddress> adressList;
 
     @NotNull
     private String phoneOne;

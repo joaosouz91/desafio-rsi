@@ -61,9 +61,9 @@ public class DesafioRsiExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, new Error(userMessage, exception), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 	
-	@ExceptionHandler({CostumerUnavailableException.class})
-	protected ResponseEntity<Object> handleCostumerUnavailableException(CostumerUnavailableException ex) {
-		String userMessage = messageSource.getMessage("costumer.unavailable", null, LocaleContextHolder.getLocale());
+	@ExceptionHandler({CustomerUnavailableException.class})
+	protected ResponseEntity<Object> handleCustomerUnavailableException(CustomerUnavailableException ex) {
+		String userMessage = messageSource.getMessage("customer.unavailable", null, LocaleContextHolder.getLocale());
 		String exception = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
 		return ResponseEntity.badRequest().body(Arrays.asList(new Error(userMessage, exception)));
 	}

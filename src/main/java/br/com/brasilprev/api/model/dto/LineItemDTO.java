@@ -1,6 +1,7 @@
 package br.com.brasilprev.api.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,9 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonPropertyOrder({
+        "id", "idOrder", "idProduct", "quantity", "name", "SKU", "sellingPrice"
+})
 public class LineItemDTO implements AbstractDTO, Serializable {
 
     private static final long serialVersionUID = 1181567578235409725L;
@@ -32,7 +36,7 @@ public class LineItemDTO implements AbstractDTO, Serializable {
 
     private String name;
 
-    private String SKU;
+    private String sku;
 
     private BigDecimal sellingPrice;
 

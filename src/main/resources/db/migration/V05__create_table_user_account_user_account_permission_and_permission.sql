@@ -26,10 +26,10 @@ INSERT INTO permission (id, description) values (2, 'ROLE_CREATE_ORDER');
 INSERT INTO permission (id, description) values (3, 'ROLE_UPDATE_ORDER');
 INSERT INTO permission (id, description) values (4, 'ROLE_REMOVE_ORDER');
 
-INSERT INTO permission (id, description) values (5, 'ROLE_SEARCH_COSTUMER');
-INSERT INTO permission (id, description) values (6, 'ROLE_CREATE_COSTUMER');
-INSERT INTO permission (id, description) values (7, 'ROLE_UPDATE_COSTUMER');
-INSERT INTO permission (id, description) values (8, 'ROLE_REMOVE_COSTUMER');
+INSERT INTO permission (id, description) values (5, 'ROLE_SEARCH_CUSTOMER');
+INSERT INTO permission (id, description) values (6, 'ROLE_CREATE_CUSTOMER');
+INSERT INTO permission (id, description) values (7, 'ROLE_UPDATE_CUSTOMER');
+INSERT INTO permission (id, description) values (8, 'ROLE_REMOVE_CUSTOMER');
 
 INSERT INTO permission (id, description) values (9, 'ROLE_SEARCH_PRODUCT');
 INSERT INTO permission (id, description) values (10, 'ROLE_CREATE_PRODUCT');
