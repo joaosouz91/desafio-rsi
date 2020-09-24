@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @JsonPropertyOrder({
-        "id", "name", "addressList", "phoneOne", "phoneTwo", "enabled"
+        "id", "name", "cpf", "addressList", "phoneOne", "phoneTwo", "enabled"
 })
 public class CustomerDTO implements AbstractDTO, Serializable {
 
@@ -26,15 +27,22 @@ public class CustomerDTO implements AbstractDTO, Serializable {
     private Long id;
 
     @NotNull
+    @Size(max = 120)
     private String name;
+
+    @NotNull
+    @Size(max = 11, min = 11)
+    private String cpf;
 
     @Valid
     @NotNull
     private List<CustomerAddressDTO> addressList;
 
     @NotNull
+    @Size(max = 11)
     private String phoneOne;
 
+    @Size(max = 11)
     private String phoneTwo;
 
     @NotNull

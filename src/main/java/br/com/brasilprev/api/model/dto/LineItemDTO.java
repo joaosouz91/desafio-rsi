@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -26,12 +27,15 @@ public class LineItemDTO implements AbstractDTO, Serializable {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @NotNull
+    @Size(max = 20)
     private Long idOrder;
 
     @NotNull
+    @Size(max = 20)
     private Long idProduct;
 
     @NotNull
+    @Size(max = 10)
     private Long quantity;
 
     private String name;

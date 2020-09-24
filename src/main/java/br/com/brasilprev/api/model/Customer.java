@@ -28,6 +28,10 @@ public class Customer implements Model, Serializable {
     @Size(min = 3, max = 60)
     private String name;
 
+    @NotNull
+    @Size(max = 11, min = 11)
+    private String cpf;
+
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CustomerAddress> adressList;
 

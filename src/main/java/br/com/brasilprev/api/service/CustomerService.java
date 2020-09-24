@@ -48,9 +48,17 @@ public class CustomerService {
     }
 
     public Customer create(CustomerDTO dto) {
+
         if(dto.getId() != null)
             throw new HttpMessageNotReadableException(
                     messageSource.getMessage("resource.id-not-allowed", null, LocaleContextHolder.getLocale()));
+
+        Set<Customer> customerSet = new HashSet<>(customerRepository.findAll());
+        if(customerSet.stream().anyMatch(customer -> customer.getCpf().equals(dto.getCpf()))){
+            throw new DataIntegrityViolationException(
+                    messageSource.getMessage("resource.operation-not-allowed-explained1", null, LocaleContextHolder.getLocale()));
+        }
+
         return customerRepository.save(customerMapper.convertDtoToModel(dto));
     }
 

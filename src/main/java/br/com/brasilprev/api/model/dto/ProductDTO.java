@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -25,15 +27,19 @@ public class ProductDTO implements AbstractDTO, Serializable {
     private Long id;
 
     @NotNull
+    @Size(max = 50)
     private String name;
 
     @NotNull
+    @Size(max = 1000)
     private String description;
 
     @NotNull
+    @Size(max = 20)
     private String sku;
 
     @NotNull
+    @Digits(integer=10, fraction=2)
     private BigDecimal price;
 
     @NotNull

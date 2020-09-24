@@ -19,6 +19,7 @@ public class CustomerMapper implements Mapper<CustomerDTO, Customer> {
         final Customer customer = new Customer();
         customer.setId(dto.getId());
         customer.setName(dto.getName());
+        customer.setCpf(dto.getCpf());
         customer.setPhoneOne(dto.getPhoneOne());
         customer.setPhoneTwo(dto.getPhoneTwo());
         customer.setStatus(dto.getStatus());
@@ -37,6 +38,7 @@ public class CustomerMapper implements Mapper<CustomerDTO, Customer> {
         return new CustomerDTO(
                 model.getId(),
                 model.getName(),
+                model.getCpf(),
                 model.getAdressList()
                         .stream()
                         .map(customerAddressMapper::convertModelToDto)
