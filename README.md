@@ -119,7 +119,7 @@ Todas as requisições demonstradas aqui podem ser aplicadas para este endpoint,
 
 ## Considerações finais
 
-O objetivo desta POC é provar algumas capacidades técnicas solicitadas pela empresa RSI. O foco não foi  apresentar regras de negócio robustas, mas sim fazer um bom uso dos frameworks e ferramentas de mercado para conceber a arquitetura do projeto da melhor forma possível, considerando também o prazo de entrega.
+O objetivo desta POC é provar algumas capacidades técnicas solicitadas pela empresa RSI. O foco não foi  apresentar regras de negócio robustas, mas sim fazer um bom uso dos frameworks e ferramentas de mercado para conceber a arquitetura do projeto da melhor forma possível.
 
 
 
