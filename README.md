@@ -60,7 +60,7 @@ http://localhost:8080/oauth/token
 
 - Clique em `Send` e observe o body de retorno.
 
-- O token estará contido na propriedade `"access_token"`. Lembre-se que você terá um (1) minuto exatamente para utilizar esta chave nas próximas requisições.
+- O token estará contido na propriedade `"access_token"`. Lembre-se que você terá dois (2) minutos exatamente para utilizar esta chave nas próximas requisições. O mais correto, pensando numa aplicação terceira, seria deixar o accessToken válido de 20 a 30 segundos, e depois solicitar um novo Token. Para fins de testes manuais, deixei 2 minutos para que não seja necessário buscar uma nova chave num espaço de tempo tão curto.
 
 
 ## Requisições em recursos da API
