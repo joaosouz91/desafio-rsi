@@ -2,6 +2,8 @@
 
 REST API made with SpringBoot to simulate a simple e-commerce.
 
+You can also read this document in portuguese by clicking [here](https://github.com/joaosouz91/desafio-rsi/blob/master/README_pt.md)
+
 ## Pre reqs
 
 Have [Docker](https://www.docker.com/) running in your machine.
