@@ -1,54 +1,51 @@
 # Desafio RSI
 
-API REST feita com SpringBoot para simular um e-commerce simples.
+REST API made with SpringBoot to simulate a simple e-commerce.
 
-## Pré-requisitos
+## Pre reqs
 
-Possuir o [Docker](https://www.docker.com/) em execução na máquina.
+Have [Docker](https://www.docker.com/) running in your machine.
 
-Estar com a `porta 8080` da máquina liberada.
-
-
+Have the `8080 port` released.
 
 
 
-## Instalação
+## Installation
 
-Após o `git clone`, execute o comando abaixo na pasta raiz do projeto.
+After executing `git clone`, also do the same with the following command on the project root folder.
 
 ```bash
 docker-compose up --build
 ```
 
-A execução do comando fará o deploy da aplicação a partir de uma imagem docker.
+The command execution will start the application deployment since a docker image.
 
-Ao término, a API estará disponível em: 
+At the end, the API will be available in:
 
 ```bash
 localhost:8080
 ```
 
-Se por ventura for exibida a exceção `com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure` no console, ignore. Significa que o serviço da aplicação Java sofreu uma tentativa de ser inicializada antes do serviço MySQL. Mas não se preocupe, pois a aplicação Java será iniciada corretamente. 
+If perhaps the exception `com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure` is shown in console, just ignore. It means that the service of the Java app has suffered an attempt to be initialized before the MySQL finish its own initialization. Don't worry, the Java app will be initialized correctly.
 
-## Obtendo um accessToken
+## Getting an accessToken
 
-É importante saber que nenhum dos recursos está automaticamente liberado. Para acessá-los é necessário passar um `accessToken` válido.
+It is important to know that none of the resources will be automatically available. To access them is necessary give to the request a valid `accessToken`
 
-- Abra o [Postman](https://www.postman.com/), inicie uma nova requisição e cole a URL abaixo na barra de endereços.
-
+- Open the [Postman](https://www.postman.com/), initialize a new request and paste the below URL in the address bar.
 ```bash
 http://localhost:8080/oauth/token
 ```
 
-- Escolha o método http `POST`
+- Choose the http `POST` method
 
-- Na aba `Authorization` especifique o `Type` como `BasicAuth`
+- On the tab `Authorization` specify the `Type` as `BasicAuth`
 
-- No campo `Username` passe o valor `rsi-app`
+- In the field `Username` set the value `rsi-app`
 
-- No campo `Password` passe o valor `r$s&i0#`
+- In the field `Password` set the value `r$s&i0#`
 
-- Vá para a aba `Body` (da requisição), escolha a opção `x-www-form-urlencoded` e crie as variáveis com seus respectivos valores conforme detalhado abaixo.
+- Go to the tab `Body` (request) and choose the option `x-www-form-urlencoded`. After that create the variables as detailed as following.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`client` : `rsi-app`
 
@@ -58,69 +55,67 @@ http://localhost:8080/oauth/token
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`grant_type` : `password`
 
-- Clique em `Send` e observe o body de retorno.
+- Click `Send` e watch the `body` return.
 
-- O token estará contido na propriedade `"access_token"`. Lembre-se que você terá dois (2) minutos exatamente para utilizar esta chave nas próximas requisições. O mais correto, pensando numa aplicação terceira, seria deixar o accessToken válido de 20 a 30 segundos, e depois solicitar um novo Token. Para fins de testes manuais, deixei 2 minutos para que não seja necessário buscar uma nova chave num espaço de tempo tão curto.
+- The `accessToken` will be the value of the field `"access_token"`. Remember that you have two (2) minutes exactly to use this key on next requests. The most correct, thinking in a third party application, would be let the `accessToken` valid only for 30 seconds, and after that require a new one. For manual tests purposes it its taking 2 minutes to expire, not being necessary fetching a new key in a short time.
 
 
-## Requisições em recursos da API
+## Requests in the API Resources
 
-Uma vez que a aplicação está no ar, é possível obter a documentação Swagger da API através da URL abaixo e montar suas próprias requisições.
+Once the aplication is running it is possible obtain the API Swagger documentation through the below URL and shape your own requests.
 
 ```bash
 http://localhost:8080/swagger-ui.html
 ```
 
-Caso não deseje montar requisição por requisição, utilize as requests já prontas para esta API, colando o endereço abaixo no import do Postman (File>Import>Link>URL) .
+If you don't want to mount request by request, use the requests that are already built for this API pasting the following address at the Postman import (File>Import>Link>URL).
 
 ```bash
 https://www.getpostman.com/collections/025846c2604a26adb701
 ```
 
-Para fazer, por exemplo, uma consulta de Produtos, dirija-se a aba `Authentication` da requisição, escolha o `Type Baerer Token` e cole o `accessToken` obtido através do passo anterior no campo exibido. As demais requests devem seguir este mesmo fluxo, até o accessToken expirar e ser necessário fazer uma nova requisição para obter nova chave.
+To get, for example, a Products search result, go to the `Authentication` tab (request), choose the `Type Baerer Token` and paste the `accessToken` obtained through the step above in the shown field. The other requests must follow the same flow till the accessToken expires, being necessary the request of a new key.
 
 ## Refresh Token
 
-Pensando em consumação da API por aplicações terceiras, é possível recuperar também um `refreshToken` após a requisição de um `accessToken`; seu valor estará em um Cookie retornado por esta requisição, podendo ser passado como parâmetro para obtenção de um novo accessToken sem a necessidade de inserir parâmetros de autenticação à nível de usuário (como os contidos no request-body) em todas as requisições.  
+Thinking in third party application consuming this API, it is possible obtain `refreshToken` after any request of a `accessToken`; its value will be attached to a Cookie returned by this request, being able to be passed as a parameter to obtain a new accessToken, with no needs to set authentication parameter at user level (like the ones in the request-body) in every request.
 
 ## Heroku
 
-Esta API também está na nuvem e pode ser acessada através do endereço:
-
+This API is also in the Cloud and can be accessed through the address:
 ```bash
 https://desafio-rsi-simple-ecommmerce.herokuapp.com/
 ```
 
-Todas as requisições demonstradas aqui podem ser aplicadas para este endpoint, considerando apenas que o `http` deverá ser trocado por `https`
+Every request shown here can be applied at this endpoint, considering only that the `http` must be changed to `https`
 
-## Algumas regras de negócio
+## Some business rules
 
-- Uma atualização na lista de produtos poderá ser realizada somente para o carrinho, enquanto este estiver sendo criado (carrinho não foi implementado ainda).
+- An update in the product list can be applied only for a shopping cart, while this is being created (shopping cart is not a implemented resource on this API yet)
 
-- Uma vez que um pedido foi criado, seus produtos não podem ser mais atualizados.
+- Once a order is created, its products can't be updated anymore. 
 
-- Se houve um erro na concepção de um pedido, no tocante a ter itens a mais ou a menos, o mesmo somente poderá ser cancelado.
+- If there is a mistake in a creation of an order, with regard to have more or less items, the order can be canceled.
 
-- Um pedido deverá ter seu fluxo de atualização de status considerando que não pode haver by-pass. Deverá passar por todas as fases sequencialmente.
+- An order must have its status update flow with no by-pass. It must pass through all phases sequentially.
 
-- A exceção do by-pass é o status "Cancelado"
+- The by-pass exception is the "Canceled" status
 
-- Um pedido não pode ser deletado do sistema, somente cancelado.
+- An order can't be deleted of the system, only canceled.
 
-- Não existe desconto por item. Desconto pode ser aplicado exclusivamente no pedido.
+- There is no discount per item. Discounts can be given only to the order total.
 
-## Considerações sobre a API
+## Considerations about the API
 
-- O usuário `admin@rsi.com.br` possui privilégios para acessar todos os recursos (leitura e modificação), enquanto que o usuário `maria@rsi.com.br` só possui acesso à consultas.
+- The user `admin@rsi.com.br` has privileges to access every resource (read and write permissions), while the user `maria@rsi.com.br` has access only to read the resources.
 
-- Para testar o acesso aos recursos com o usuário Maria, mude a variável `username` para `maria@rsi.com.br` na aba `Body` da requisição de um novo `accessToken`. Sua senha foi mantida como `admin`, portanto não é necessária alterá-la na requisição.
+- To test the access to the resources with the user Maria, change de variable `username` to `maria@rsi.com.br` on the tab `Body` of a new request of a `accessToken`. Her password was kept as `admin`, therefore it is not necessary change it on the request.
 
-- Nas requisições de `CRIAÇÃO` de Pedidos, Produtos e Clientes não especifique o campo `id` destes objetos, apenas os campos `id` dos objetos contidos neles (Lista de produtos, Endereços, etc). O Swagger especifica em seus exemplos para passá-los como `0`, mas isto é errado. Estas propriedades serão removidas posteriormente. No mais, há uma exceção preparada para requisições com estes parâmetros passados indevidamente. 
+- On the Order, Products and Customers `CREATION` requests DO NOT specify the `id` field of these objects, only the `id` fields of the inner objects of them (Product List, Address, etc). Swagger specifies in its examples to pass them like `0`, but this is wrong. These properties will be removed later. Anyway, there is an exception loaded to catch request with these parameters passed incorrectly.
 
-## Considerações finais
+## Final considerations
 
-O objetivo desta POC é provar algumas capacidades técnicas solicitadas pela empresa RSI. O foco não foi  apresentar regras de negócio robustas, mas sim fazer um bom uso dos frameworks e ferramentas de mercado para conceber a arquitetura do projeto da melhor forma possível.
-
+The objective of this POC is to proof some technical capacities demanded by RSI. The focus was not to present strong business rules, but demonstrate a good usage of the current most used market frameworks, conceiving the project at its best architecture possible.
 
 
 
