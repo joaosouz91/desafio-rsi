@@ -113,7 +113,7 @@ Every request shown here can be applied at this endpoint, considering only that 
 
 - To test the access to the resources with the user Maria, change the variable `username` value to `maria@rsi.com.br` on the tab `Body` of a new request of a `accessToken`. Her password was kept as `admin`, therefore it is not necessary change it on the request.
 
-- In the the Order, Products and Customers `CREATION` requests DO NOT specify the `id` field of these objects, only the `id` fields of the inner objects of them (Product List, Address, etc). Swagger specifies in its examples to pass them like `0`, but this is wrong. These properties will be removed from there later. For now there is an exception loaded to catch request with these parameters passed incorrectly.
+- In the Order, Products and Customers `CREATION` requests DO NOT specify the `id` field of these objects, only the `id` fields of the inner objects of them (Product List, Address, etc). Swagger specifies in its examples to pass them like `0`, but this is wrong. These properties will be removed from there later. For now there is an exception loaded to catch request with these parameters passed incorrectly.
 
 ## Final considerations
 
