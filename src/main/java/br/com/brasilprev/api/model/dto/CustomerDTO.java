@@ -18,7 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @JsonPropertyOrder({
-        "id", "name", "cpf", "addressList", "phoneOne", "phoneTwo", "enabled"
+        "id", "name", "cpfCnpj", "addressList", "phoneOne", "phoneTwo", "enabled"
 })
 public class CustomerDTO implements AbstractDTO, Serializable {
 
@@ -31,8 +31,8 @@ public class CustomerDTO implements AbstractDTO, Serializable {
     private String name;
 
     @NotNull
-    @Size(max = 11, min = 11)
-    private String cpf;
+    @Size(max = 14, min = 11)
+    private String cpfCnpj;
 
     @Valid
     @NotNull

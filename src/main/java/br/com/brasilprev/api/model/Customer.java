@@ -29,8 +29,9 @@ public class Customer implements Model, Serializable {
     private String name;
 
     @NotNull
-    @Size(max = 11, min = 11)
-    private String cpf;
+    @Size(max = 41, min = 11)
+    @Column(name = "cpf_cnpj")
+    private String cpfCnpj;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CustomerAddress> adressList;

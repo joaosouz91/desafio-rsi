@@ -33,6 +33,9 @@ public class CustomerService {
     private OrderRepository orderRepository;
 
     @Autowired
+    private PublicDataValidationService validationService;
+
+    @Autowired
     private MessageSource messageSource;
 
     public List<CustomerDTO> findAll() {
@@ -54,9 +57,14 @@ public class CustomerService {
                     messageSource.getMessage("resource.id-not-allowed", null, LocaleContextHolder.getLocale()));
 
         Set<Customer> customerSet = new HashSet<>(customerRepository.findAll());
-        if(customerSet.stream().anyMatch(customer -> customer.getCpf().equals(dto.getCpf()))){
+        if(customerSet.stream().anyMatch(customer -> customer.getCpfCnpj().equals(dto.getCpfCnpj()))){
             throw new DataIntegrityViolationException(
                     messageSource.getMessage("resource.operation-not-allowed-explained1", null, LocaleContextHolder.getLocale()));
+        }
+
+        if(!validationService.isValidCpfCnpj(dto.getCpfCnpj())){
+            throw new DataIntegrityViolationException(
+                    messageSource.getMessage("resource.operation-not-allowed-explained2", null, LocaleContextHolder.getLocale()));
         }
 
         return customerRepository.save(customerMapper.convertDtoToModel(dto));
