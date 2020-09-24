@@ -5,7 +5,7 @@ services:
     image: mysql:8.0.21
     networks:
       - spring-boot-mysql-network
-    restart: always
+    restart: on-failure
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=desafiorsi
@@ -19,6 +19,7 @@ services:
       - spring-boot-mysql-network
     depends_on:
       - mysql-service
+    restart: on-failure
 
 networks:
   spring-boot-mysql-network:

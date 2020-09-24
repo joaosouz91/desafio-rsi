@@ -28,9 +28,11 @@ Ao término, a API estará disponível em:
 localhost:8080
 ```
 
-É importante saber que nenhum dos recursos está automaticamente liberado. Para acessá-los é necessário passar um `accessToken` válido.
+Se por ventura for exibida a exceção `com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure` no console, ignore. Significa que o serviço da aplicação Java sofreu uma tentativa de ser inicializada antes do serviço MySQL. Mas não se preocupe, pois a aplicação Java será iniciada corretamente. 
 
 ## Obtendo um accessToken
+
+É importante saber que nenhum dos recursos está automaticamente liberado. Para acessá-los é necessário passar um `accessToken` válido.
 
 - Abra o [Postman](https://www.postman.com/), inicie uma nova requisição e cole a URL abaixo na barra de endereços.
 
