@@ -8,6 +8,9 @@ COPY .mvn .mvn
 COPY pom.xml .
 
 RUN chmod +x ./mvnw
+
+RUN dos2unix mvnw
+
 # download the dependency if needed or if the pom file is changed
 RUN ./mvnw dependency:go-offline -B
 
