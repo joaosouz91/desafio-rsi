@@ -31,6 +31,9 @@ public class Customer implements Model, Serializable {
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CustomerAddress> adressList;
 
+    @OneToMany(cascade=CascadeType.REMOVE, orphanRemoval = true, mappedBy="customer", fetch = FetchType.LAZY)
+    public List<Order> orderList;
+
     @NotNull
     private String phoneOne;
 
