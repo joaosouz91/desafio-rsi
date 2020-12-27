@@ -18,11 +18,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
-@Profile({"docker", "dev", "prod"})
 @Configuration
 @EnableWebSecurity
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Profile({"docker", "prod"})
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	
 	@Autowired
