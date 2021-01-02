@@ -2,13 +2,14 @@ package br.com.brasilprev.api.config;
 
 import br.com.brasilprev.api.config.security.token.CustomTokenEnhancer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
@@ -20,18 +21,20 @@ import java.util.Arrays;
 
 
 @Configuration
-@EnableAuthorizationServer
-@Profile({"docker", "prod"})
+@Profile({"docker", "prod", "dev-oauth"})
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
+
+	@Autowired
+	private UserDetailsService userDetailsService;
 	
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
 				.withClient("rsi-app")
-				.secret("r$s&i0#")
+				.secret("$2a$10$BhotqeFtM/Rwpuuji2yEUuzpZJnXgOkddhDtYrBYNjnYRR5kfc40.") //r$s&i0#
 				.scopes("read", "write")
 				.authorizedGrantTypes("password", "refresh_token")
 				.accessTokenValiditySeconds(120)
@@ -49,6 +52,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.tokenEnhancer(tokenEnhancerChain)
 			//.accessTokenConverter(accessTokenConverter())
 			.reuseRefreshTokens(false)
+			.userDetailsService(userDetailsService)
 			.authenticationManager(authenticationManager);
 	}
 	

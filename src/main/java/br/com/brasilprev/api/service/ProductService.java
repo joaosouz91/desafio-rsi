@@ -28,12 +28,12 @@ public class ProductService {
 
     public List<ProductDTO> findAll() {
         List<Product> productList = productRepository.findAll();
-        if(productList == null || productList.isEmpty()) throw new EmptyResultDataAccessException(1);
+        if(productList.isEmpty()) throw new EmptyResultDataAccessException(1);
         return productList.stream().map(productMapper::convertModelToDto).collect(Collectors.toList());
     }
 
     public ProductDTO findById(Long id) {
-        Product product = productRepository.findOne(id);
+        Product product = productRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(1));
         if(product == null) throw new EmptyResultDataAccessException(1);
         return productMapper.convertModelToDto(product);
     }
@@ -54,7 +54,8 @@ public class ProductService {
     }
 
     public void delete(Long id) {
-        productRepository.delete(id);
+        Product p = productRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(1));
+        productRepository.delete(p);
     }
 
     private void validateCreationScope(ProductDTO dto) {

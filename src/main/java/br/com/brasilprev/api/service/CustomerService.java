@@ -1,5 +1,6 @@
 package br.com.brasilprev.api.service;
 
+import br.com.brasilprev.api.exception.CustomerUnavailableException;
 import br.com.brasilprev.api.model.Order;
 import br.com.brasilprev.api.model.dto.CustomerDTO;
 import br.com.brasilprev.api.model.Customer;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,9 +47,9 @@ public class CustomerService {
     }
 
     public CustomerDTO findById(Long id) {
-        Customer customer = customerRepository.findOne(id);
-        if(customer == null) throw new EmptyResultDataAccessException(1);
-        return customerMapper.convertModelToDto(customer);
+        Optional<Customer> customer = customerRepository.findById(id);
+        if(!customer.isPresent()) throw new EmptyResultDataAccessException(1);
+        return customerMapper.convertModelToDto(customer.get());
     }
 
     public Customer create(CustomerDTO dto) {
@@ -81,7 +83,8 @@ public class CustomerService {
             throw new DataIntegrityViolationException(
                     messageSource.getMessage("resource.operation-not-allowed-explained0", null, LocaleContextHolder.getLocale()));
         }
-        customerRepository.delete(id);
+        Customer c = customerRepository.findById(id).orElseThrow(CustomerUnavailableException::new);
+        customerRepository.delete(c);
     }
 
 

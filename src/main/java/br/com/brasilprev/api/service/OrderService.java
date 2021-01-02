@@ -2,6 +2,7 @@ package br.com.brasilprev.api.service;
 
 import br.com.brasilprev.api.exception.AddressUnavailableException;
 import br.com.brasilprev.api.exception.CustomerUnavailableException;
+import br.com.brasilprev.api.exception.OrderUnavailableException;
 import br.com.brasilprev.api.exception.ProductUnavailableException;
 import br.com.brasilprev.api.model.Customer;
 import br.com.brasilprev.api.model.Order;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,20 +51,25 @@ public class OrderService {
     }
 
     public OrderDTO findById(Long id) {
-        Order order = orderRepository.findOne(id);
-        if(order == null) throw new EmptyResultDataAccessException(1);
+        Order order = orderRepository.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(1));
         return orderMapper.convertModelToDto(order);
     }
 
     public Order create(OrderDTO dto) {
+
         validateCreationScope(dto);
-        Customer customer = customerRepository.findOne(dto.getIdCustomer());
-        Set<Product> productSet = dto.getProductList().stream().map(p -> productRepository.findOne(p.getIdProduct())).collect(Collectors.toSet());
+
+        Customer customer = customerRepository.findById(dto.getIdCustomer()).orElseThrow(CustomerUnavailableException::new);
+
+        Set<Product> productSet = dto.getProductList().stream()
+                                    .map(p -> productRepository.findById(p.getIdProduct()).orElseThrow(ProductUnavailableException::new))
+                                    .collect(Collectors.toSet());
+
         return orderRepository.save(orderMapper.convertDtoToModel(dto, productSet, customer));
     }
 
     public OrderDTO updateStatus(Long id) {
-        Order order = orderRepository.findOne(id);
+        Order order = orderRepository.findById(id).orElseThrow(OrderUnavailableException::new);
         validateStatusUpdate(order);
         order.setStatus(order.getStatus().getNext());
         if (order.getStatus().equals(OrderStatus.DELIVERED)) order.setEndDate(LocalDate.now());
@@ -70,7 +77,7 @@ public class OrderService {
     }
 
     public OrderDTO cancelOrder(Long id) {
-        Order order = orderRepository.findOne(id);
+        Order order = orderRepository.findById(id).orElseThrow(OrderUnavailableException::new);
         // call chargeback treatments
         validateStatusUpdate(order);
         order.setEndDate(LocalDate.now());
@@ -92,20 +99,20 @@ public class OrderService {
                     messageSource.getMessage("resource.id-not-allowed", null, LocaleContextHolder.getLocale()));
         }
 
-        Customer customer = customerRepository.findOne(dto.getIdCustomer());
-        if(customer == null || !customer.getStatus().getBoolean()) {
+        Optional<Customer> customer = customerRepository.findById(dto.getIdCustomer());
+        if(!customer.isPresent() || !customer.get().getStatus().getBoolean()) {
             throw new CustomerUnavailableException();
         }
 
-        customer.getAdressList()
+        customer.get().getAdressList()
                 .stream()
                 .filter(address -> address.getId().equals(dto.getIdDeliveryAddress()))
                 .findFirst()
                 .orElseThrow(AddressUnavailableException::new);
 
         dto.getProductList().forEach(p -> {
-            Product product = productRepository.findOne(p.getIdProduct());
-            if(product == null || !product.getStatus().getBoolean()) {
+            Optional<Product> product = productRepository.findById(p.getIdProduct());
+            if(!product.isPresent() || !product.get().getStatus().getBoolean()) {
                 throw new ProductUnavailableException();
             }
         });

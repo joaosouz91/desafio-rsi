@@ -1,4 +1,4 @@
- package br.com.brasilprev.api.exception;
+package br.com.brasilprev.api.exception;
 
 public class CustomerUnavailableException extends RuntimeException {
 
