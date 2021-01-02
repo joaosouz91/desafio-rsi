@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 @ConditionalOnProperty(value = "app.security.basic.enabled", havingValue = "false")
-@Profile({"teste"})
+@Profile({"teste", "dev"})
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
